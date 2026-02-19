@@ -3,6 +3,8 @@ import dotenv from "dotenv"
 import { connectDB } from "./config/mongoose.config.js"
 import authRoutes from "./routes/auth.route.js"
 import userRoutes from "./routes/user.route.js"
+import postRoutes from "./routes/post.route.js"
+import commentRoutes from "./routes/comment.route.js"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import authMiddleware from "./middleware/auth.middleware.js"
@@ -24,6 +26,8 @@ app.use(express.json())
 
 app.use("/api/auth", authRoutes)
 app.use("/api/user", authMiddleware, userRoutes)
+app.use("/api/posts", postRoutes)
+app.use("/api/comments", commentRoutes)
 
 app.listen(process.env.PORT, () => {
     console.log("Server is running on PORT", process.env.PORT)
