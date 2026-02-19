@@ -47,7 +47,7 @@ export default function Register() {
         }
         
         try{
-            const res = await axios.post(`${URL}/auth/register`, formData, {
+            const res = await axios.post(`${URL}/api/auth/register`, formData, {
                 withCredentials: true
             })
             console.log(res)

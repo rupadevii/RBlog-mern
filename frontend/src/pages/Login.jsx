@@ -44,7 +44,7 @@ export default function Login() {
         }
         
         try{
-            const res = await axios.post(`${URL}/auth/login`, formData, {
+            const res = await axios.post(`${URL}/api/auth/login`, formData, {
                 withCredentials: true
             })
             console.log(res)
