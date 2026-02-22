@@ -1,9 +1,10 @@
 import cloudinary from "../config/cloudinary.config.js"
 import Post from "../models/post.model.js"
+import Comment from "../models/comment.model.js"
 
 export const getPosts = async (req, res) => {
     try{
-        const posts = await Post.find({}).sort({createdAt: -1})
+        const posts = await Post.find({}).populate("author", "username").sort({createdAt: -1})
 
         res.status(200).json({msg: "Posts", posts})
 
@@ -52,16 +53,34 @@ export const getPostById = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const post = await Post.findById(id);
-
+        const post = await Post.findById(id).populate("author", "username avatar");
+        const comments = await Comment.find({post: id}).populate("user", "username avatar")
+        
         if(!post){
             return res.status(404).json({msg: "Post not found."})
         }
 
-        res.status(200).json({msg: "Post Details:", post})
+        res.status(200).json({msg: "Post Details:", post, comments})
     } catch (error) {
         console.error(error)
         res.status(500).json({msg: error.message})
+    }
+}
+
+export const getPostsByUserId = async (req, res) => {
+    try{
+        const {userId} = req.params;
+
+        const posts = await Post.find({author:userId});
+        
+        if(posts.length===0){
+            return res.status(404).json({msg: "Posts not found."})
+        }
+
+        res.status(200).json({msg: "Post Details:", posts})
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error: error.message})
     }
 }
 

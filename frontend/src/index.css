@@ -1,9 +1,28 @@
 @import "tailwindcss";
 
 :root{
-    background-image: linear-gradient(to right, black, rgb(24, 23, 23), black);
-    color: white;
+    /* background-image: linear-gradient(to right, black, rgb(24, 23, 23), black); */
+    /* color: white; */
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin: 0;
-    padding: 0
+    padding: 0;
+    color: black;
+}
+
+.light{
+    background-color: white;
+    color: black
+}
+
+.dark{
+    /* background-color: black; */
+    background-image: linear-gradient(to right, black, rgb(24, 23, 23), black);
+    color: white;
+}
+
+nav{
+    color: white;
+}
+button{
+    cursor: pointer;
 }

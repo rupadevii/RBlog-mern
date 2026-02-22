@@ -2,9 +2,9 @@ import multer from "multer"
 
 const storageOptions = multer.memoryStorage()
 
-const upload = multer({storage: storageOptions,
+export const upload = multer({storage: storageOptions,
     fileFilter : (req, file, cb) => {
-        if(file.mimetype === "image/jpeg" || file.mimetype === "image/jpg" || file.mimetype === "image/png"){
+        if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"){
             cb(null, true)
         }
         else{
@@ -12,8 +12,21 @@ const upload = multer({storage: storageOptions,
         }
     },
     limits: {
-        fileSize: 2 * 1024 * 1024
+        fileSize: 5 * 1024 * 1024
     }
 })
 
-export default upload
+export const postUpload = multer({storage: storageOptions,
+    fileFilter : (req, file, cb) => {
+        if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"){
+            cb(null, true)
+        }
+        else{
+            cb(new Error("Invalid file type"))
+        }
+    },
+    limits: {
+        fileSize: 30 * 1024 * 1024
+    }
+})
+

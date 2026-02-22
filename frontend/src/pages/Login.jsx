@@ -1,15 +1,16 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const URL = import.meta.env.VITE_BASE_URL
-
 
 export default function Login() {
     const [formData, setFormData] = useState({email: "", password: ""})
     const [errors, setErrors] = useState({})
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
+    const {login} = useAuth()
+    const {theme} = useTheme()
 
     function handleChange(e){
         const {name, value} = e.target
@@ -44,11 +45,8 @@ export default function Login() {
         }
         
         try{
-            const res = await axios.post(`${URL}/api/auth/login`, formData, {
-                withCredentials: true
-            })
+            const res = await login(formData)
             console.log(res)
-
             setMsg({success: "Logged in successfully!"})
             setTimeout(() => {
                 navigate("/")
@@ -63,7 +61,7 @@ export default function Login() {
     }
 
     return (
-        <main className='h-screen flex justify-center items-center'>
+        <main className={`h-screen flex justify-center items-center ${theme}`}>
             <div>
                 <form noValidate className='flex flex-col border border-gray-400 rounded-md p-10 items-center' onSubmit={handleSubmit}>
                     <h2 className='text-center text-xl mb-4'>Login</h2>
@@ -87,7 +85,7 @@ export default function Login() {
                         placeholder='Enter password'/>
                     {errors.password && (<p className='text-red-500 my-2 self-start ml-3'>{errors.password}</p>)}
 
-                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800'>Login</button>
+                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white'>Login</button>
                     <p className="mt-5 text-zinc-400">
                         Don't have an account?{" "}
                         <span className="text-red-900 underline hover:text-white">

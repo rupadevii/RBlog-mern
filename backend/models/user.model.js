@@ -11,13 +11,14 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Password is requied"]
+        required: [true, "Password is requied"],
     },
     bio: {
         type: String,
     },
     avatar: {
-        type: String
+        type: String,
+        default: "https://res.cloudinary.com/dsspxoffq/image/upload/v1771577862/default_coey2h.png"
     },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
