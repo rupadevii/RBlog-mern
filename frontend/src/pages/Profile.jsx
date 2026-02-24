@@ -8,6 +8,7 @@ export default function Profile() {
     const {user} = useAuth()
     const [posts, setPosts] = useState([])
     const {theme} = useTheme()
+    
     useEffect(() => {
         async function loadPosts(){
             try{
@@ -24,18 +25,18 @@ export default function Profile() {
     }, [user])
     
     return (
-        <main className={`py-28 px-60 ${theme} min-h-screen`}>
+        <main className={`py-28 px-60 min-h-screen w-full`}>
             {!user  ?(
-                <div>Loading</div>
+                <div>Loading...</div>
             ) : (
             <section>
-                <div className='px-12 flex gap-42 border-b border-gray-300 pb-3'>
-                    <div className='flex items-center flex-col gap-2'>
+                <div className='px-12 flex gap-4 border-b border-gray-300 pb-3'>
+                    <div className='flex items-center flex-col gap-2 justify-center w-75'>
                         <div>
-                            {user.avatar && (<img src={user.avatar} className='w-22 rounded-full'/>)}
+                            {user.avatar && (<img src={user.avatar} className='w-22 h-22 rounded-full'/>)}
                         </div>
-                        <div>
-                            <h3 className='text-lg'>{user.username}</h3>
+                        <div className='flex items-center flex-col'>
+                            <h3 className='text-lg my-1'>{user.username}</h3>
                             <p className='font-light'>{user.bio}</p>
                         </div>
                     </div>
@@ -53,7 +54,7 @@ export default function Profile() {
                             <span>{posts?.length || 0}</span>
                         </div>
                     </div>
-                    <div>
+                    <div className='ml-25 mt-2'>
                         <Link to="/update-profile"><button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center'>Update</button></Link>
                     </div>
                 </div>

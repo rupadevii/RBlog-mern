@@ -8,6 +8,11 @@ import Profile from "./pages/Profile";
 import UpdateProfile from "./pages/UpdateProfile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
+import { Delete } from "lucide-react";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 export default function App() {
     return (
@@ -21,6 +26,8 @@ export default function App() {
                 <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
                 <Route path="/update-profile" element={<ProtectedRoute><UpdateProfile/></ProtectedRoute>}/>
                 <Route path="/create" element={<CreatePost/>}/>
+                <Route path='/edit/:id' element={<EditPost/>}/>
+                <Route path='/delete/:id' element={<Delete/>}/>
             </Routes>
         </>
     )

@@ -2,11 +2,9 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { useTheme } from '../context/ThemeContext'
 
 export default function UpdateProfile() {
     const {user, setUser} = useAuth()
-    const {theme} = useTheme()
     const [file, setFile] = useState(null)
     const [formDetails, setFormDetails] = useState({username: user.username, bio: user.bio || ""})
     const navigate = useNavigate();
@@ -48,33 +46,50 @@ export default function UpdateProfile() {
         }
     }
 
+    function cancelUpdate(){
+        setTimeout(() => {
+            navigate("/profile")
+        }, 1000)
+    }
+
     return (
-        <section className={`min-h-screen ${theme} flex justify-center pt-20`}>
-            <form noValidate className='flex flex-col rounded-md p-10' onSubmit={handleSubmit}>
-                <input type="file" onChange={uploadFile}/>
-                <label htmlFor='username'>Username:</label>
-                <input 
-                    type='text'
-                    id='username' 
-                    name='username'
-                    value={formDetails.username}
-                    onChange={handleChange}
-                    className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
-                    />
+        <section className={`min-h-screen flex justify-center pt-20`}>
+            <form noValidate 
+                className='flex flex-col rounded-md p-10 items-center gap-4' onSubmit={handleSubmit}>
+                <img src={user.avatar} className='w-30 h-30 rounded-full'/>
+                <input type="file" onChange={uploadFile} className='self-center'/>
 
-                <label htmlFor='bio'>Bio:</label>
-                <input 
-                    type="text" 
-                    name='bio'
-                    id='bio'
-                    value={formDetails.bio}
-                    onChange={handleChange}
-                    className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
-                    placeholder='Enter bio'/>
+                <div className='flex flex-col'>
+                    <label htmlFor='username'>Username:</label>
+                    <input 
+                        type='text'
+                        id='username' 
+                        name='username'
+                        value={formDetails.username}
+                        onChange={handleChange}
+                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        />
+                </div>
 
-                <div className=''>
-                    <button className='border rounded-sm px-3 py-2'>Cancel</button>
-                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white'>Update</button>
+                <div className='flex flex-col'>
+                    <label htmlFor='bio'>Bio:</label>
+                    <input 
+                        type="text" 
+                        name='bio'
+                        id='bio'
+                        value={formDetails.bio}
+                        onChange={handleChange}
+                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        placeholder='Enter bio'/>
+                </div>
+
+                <div className='flex w-full justify-between items-center'>
+                    <button 
+                        className='border rounded-sm px-3 py-2' 
+                        onClick={cancelUpdate}>Cancel</button>
+                    <button 
+                        type='submit' 
+                        className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Update</button>
                 </div>
                     
             </form>

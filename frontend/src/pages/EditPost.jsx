@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
-import { useTheme } from '../context/ThemeContext'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-export default function CreatePost() {
-    const {theme} = useTheme()
+export default function EditPost() {
+    const {id} = useParams()
     const {user} = useAuth()
-    const [formDetails, setFormDetails] = useState({title: "", content: ""})
+    const location = useLocation()
+    const [formDetails, setFormDetails] = useState({title: location.state.title, content: location.state.content})
     const [file, setFile] = useState(null)
     const [errors, setErrors] = useState({title: "", content: ""})
     const navigate = useNavigate()
-
+console.log(location)
     function handleChange(e){
         setFormDetails(prev => ({...prev, [e.target.name]: e.target.value}))
     }
-
+    
     function uploadFile(e){
         setFile(e.target.files[0])
     }
-
+    
     async function handleSubmit(e){
-        
         e.preventDefault()
 
         let error = {}
@@ -41,7 +40,7 @@ export default function CreatePost() {
         formData.append('content', formDetails.content)
 
         try{
-            const res = await axios.post(`/api/posts`, formData, {
+            const res = await axios.put(`/api/posts/${id}`, formData, {
                 withCredentials: true,
                 headers: {
                 "Content-Type": "multipart/form-data",
@@ -57,10 +56,10 @@ export default function CreatePost() {
             console.error(error)
         }
     }
-
+    
     return (
-        <main className={`w-full flex px-50 py-28 ${theme} min-h-screen`}>
-            {!user  ?(
+        <main className={`mt-18 py-10 px-60 min-h-screen`}>
+           {!user  ?(
                 <div>Loading...</div>
             ) : (
                 <section>
@@ -72,7 +71,9 @@ export default function CreatePost() {
                         onChange={handleChange}
                         className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
                         placeholder='Enter Title'/>
-                        {errors.title && (<p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>)}
+                        {errors.title && (
+                            <p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>
+                        )}
 
                         <textarea 
                             rows="15" 
@@ -80,15 +81,15 @@ export default function CreatePost() {
                             onChange={handleChange} 
                             name="content" 
                             value={formDetails.content}
-                            className='border'></textarea>
-                        {errors.content && (<p className='text-red-500 my-2 self-start ml-3'>{errors.content}</p>)}
+                            className='border'>
+                        </textarea>
 
+                        <input type="file" onChange={uploadFile}/>
 
-                        <input type="file" onChange={uploadFile} className='self-center'/>
-                        <button type='submit' className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Create</button>
+                        <button type='submit' className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Save</button>
                     </form>
                 </section>
-            )}
+            )} 
         </main>
     )
 }

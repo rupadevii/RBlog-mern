@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from "axios"
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 
 export default function Home() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
-    const {user} = useAuth()
     const {theme} = useTheme();
-    console.log(user)
 
     useEffect(() => {
         async function loadPosts(){
@@ -26,13 +23,13 @@ export default function Home() {
     }, [])
     
     return (
-        <main className={`w-full flex px-50 py-28 ${theme} min-h-screen`}>
-        {loading ? (
-            <section>
-                <h1>Loading...</h1>
-            </section>
-        ) : (
+        <main className={`w-full flex px-50 py-28 min-h-screen`}>
             <section className='w-100'>
+            {loading ? (
+                <div className='flex justify-center'>
+                    <h1>Loading...</h1>
+                </div>
+            ) : (
                 <div className='w-100 flex flex-col gap-4'>
                     {posts.map(post => (
                         <div className='p-5 shadow-lg w-200' key={post._id}>
@@ -48,9 +45,8 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
+            )}
             </section>  
-        )}
-        </main>
-        
+        </main> 
     )
 }

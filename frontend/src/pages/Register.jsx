@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { useTheme } from '../context/ThemeContext';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Register() {
@@ -9,7 +8,6 @@ export default function Register() {
     const [errors, setErrors] = useState({})
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
-    const {theme} = useTheme()
 
     function handleChange(e){
         const {name, value} = e.target
@@ -67,7 +65,7 @@ export default function Register() {
     }
 
     return (
-        <main className={`h-screen flex justify-center items-center ${theme}`}>
+        <main className={`h-screen flex justify-center items-center`}>
             <div>
                 <form noValidate className='flex flex-col border border-gray-400 rounded-md px-9 py-9 items-center' onSubmit={handleSubmit}>
                     <h2 className='text-center text-xl mb-4'>Register</h2>

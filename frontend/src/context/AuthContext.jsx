@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    // const [loading, setLoading] = useState(true)
     const isAuthenticated = user !== null
 
     useEffect(() => {
@@ -20,11 +21,13 @@ export const AuthProvider = ({children}) => {
                 console.log(error);
                 setUser(null);
             }
+            // finally{
+            //     setLoading(false)
+            // }
         }
         loadUser()
     }, [])
 
-    console.log("Current user data" ,user)
 
     async function login(data){
         const res = await axios.post(`/api/auth/login`, data, {
