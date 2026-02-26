@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
+import { useSelector } from 'react-redux'
 
 export default function Profile() {
-    const {user} = useAuth()
+    const {user} = useSelector((state) => state.auth)
     const [posts, setPosts] = useState([])
     const {theme} = useTheme()
     
@@ -26,9 +26,6 @@ export default function Profile() {
     
     return (
         <main className={`py-28 px-60 min-h-screen w-full`}>
-            {!user  ?(
-                <div>Loading...</div>
-            ) : (
             <section>
                 <div className='px-12 flex gap-4 border-b border-gray-300 pb-3'>
                     <div className='flex items-center flex-col gap-2 justify-center w-75'>
@@ -77,7 +74,6 @@ export default function Profile() {
                     )}
                 </div> 
             </section>
-            )} 
         </main>
     )
 }

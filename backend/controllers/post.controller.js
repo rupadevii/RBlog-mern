@@ -154,7 +154,7 @@ export const likePost = async (req, res) => {
         }
         await post.save()
 
-        res.status(200).json({msg: "Post liked successfully."})
+        res.status(200).json({msg: "Post liked successfully.", post})
     } catch (error) {
         console.error(error)
         res.status(500).json({msg: error.message})

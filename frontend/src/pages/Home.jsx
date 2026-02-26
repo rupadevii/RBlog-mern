@@ -1,25 +1,17 @@
-import { useState, useEffect } from 'react'
-import axios from "axios"
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchPosts } from '../redux/features/postSlice'
 
 export default function Home() {
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(true)
+    const {posts, loading} = useSelector((state) => state.post)
+    const dispatch = useDispatch()
     const {theme} = useTheme();
 
     useEffect(() => {
-        async function loadPosts(){
-            try{
-                const res = await axios.get(`/api/posts`)
-                setPosts(res.data.posts)
-            }catch(error){
-                console.log(error)
-            }finally{
-                setLoading(false)
-            }
-        }
-        loadPosts()
+        dispatch(fetchPosts())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     return (

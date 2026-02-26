@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext';
+import { useDispatch} from 'react-redux';
+import axios from 'axios';
+import { login } from '../redux/features/authSlice';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Login() {
@@ -8,8 +10,8 @@ export default function Login() {
     const [errors, setErrors] = useState({})
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
-    const {login} = useAuth()
-
+    const dispatch = useDispatch()
+ 
     function handleChange(e){
         const {name, value} = e.target
         setFormData((prev) => ({...prev, [name] : value}))
@@ -43,8 +45,10 @@ export default function Login() {
         }
         
         try{
-            const res = await login(formData)
-            console.log(res)
+            const res = await axios.post(`/api/auth/login`, formData, {
+                withCredentials: true
+            })
+            dispatch(login({user: res.data.user}))
             setMsg({success: "Logged in successfully!"})
             setTimeout(() => {
                 navigate("/")

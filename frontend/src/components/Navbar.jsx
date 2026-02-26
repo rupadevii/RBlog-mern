@@ -1,24 +1,30 @@
-import React from 'react'
 import { Moon, Pencil, Search, Sun } from "lucide-react"
 import { Link, useLocation } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { logout } from '../redux/features/authSlice'
 
 export default function Navbar() {
     const location = useLocation()
-    const {isAuthenticated, user, logout} = useAuth()
+    const {user, isAuthenticated} = useSelector((state) => state.auth)
     const isAbsent = location.pathname === "/register" || location.pathname === "/login";
     const {theme, setTheme} = useTheme()
-
+    const dispatch = useDispatch()
+    
     if(isAbsent) return null;
 
     async function logoutUser(){
         try{
-            const res = await logout();
-            console.log(res)
+            const res = await axios.post(`/api/auth/logout`, {
+                withCredentials: true
+            })
+            setTimeout(() => {
+                dispatch(logout({user: res.data.user}))
+            }, 1000)
         }
         catch(error){
-            console.error(error)
+            console.error(error.response.data.msg)
         }
 
     }
@@ -43,7 +49,7 @@ export default function Navbar() {
                                 {user.avatar && (
                                 <li>
                                     <Link to="/profile">
-                                        <img src={user.avatar} className='w-7 rounded-full hover:cursor-pointer' alt={user.username} />
+                                        <img src={user.avatar} className='w-7 h-7 rounded-full hover:cursor-pointer' alt={user.username} />
                                     </Link>
                                 </li>
                                 )}

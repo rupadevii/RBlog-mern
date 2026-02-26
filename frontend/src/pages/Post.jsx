@@ -1,24 +1,24 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import CommentForm from '../components/CommentForm'
 import { Pencil, ThumbsUp, Trash } from 'lucide-react'
 import DeletePost from '../components/DeletePost'
 import Modal from 'react-modal'
 import { useTheme } from '../context/ThemeContext'
+import Like from '../components/Like'
+import { useSelector } from 'react-redux'
 
 export default function Post() {
     const {id} = useParams()
     const [post, setPost] = useState({})
     const [comments, setComments] = useState([])
-    const [loading, setLoading] = useState(true)
-    const {isAuthenticated} = useAuth()
-    const {user} = useAuth()
+    const [postLoading, setPostLoading] = useState(true)
+    const {user, isAuthenticated} = useSelector((state) => state.auth)
     const navigate = useNavigate()
     const [modalIsOpen, setIsOpen] = useState(false);
     const {theme} = useTheme()
-    const [isLiked, setIsLiked] = useState(false)
+    // const [isLiked, setIsLiked] = useState(false)
 
     function openModal() {
     setIsOpen(true);
@@ -60,12 +60,11 @@ export default function Post() {
                 setPost(res.data.post)
                 setComments(res.data.comments)
                 console.log(res.data.comments)
-                
             }catch(error){
                 console.log(error)
             }
             finally{
-                setLoading(false)
+                setPostLoading(false)
             }
         }
         loadPosts()
@@ -75,11 +74,13 @@ export default function Post() {
     function editPost(){
         navigate(`/edit/${post._id}`, {state: post})
     }
+
+    const isLiked = user !== null && post.likes && post.likes.includes(user._id)
     
     return (
         <main className={`mt-18 px-60 min-h-screen`}>
-            <section className='py-12 px-18 border-b-2 border-gray-300'>
-                {loading ? (
+            <section className='pt-10 pb-6 px-18 border-b-2 border-gray-300'>
+                {postLoading ? (
                     <div className='flex items-center justify-center'>Loading</div>
                 ) : (
                     <div>
@@ -101,8 +102,8 @@ export default function Post() {
                             )}
                         </div>
                         <div className='flex items-center gap-3 mb-5'>
-                            <img src={post.author?.avatar} className='w-8 rounded-full'/>
-                            <span className='hover:underline underline-offset-2 hover:cursor-pointer'>{post.author?.username}</span>
+                            <img src={post.author?.avatar} className='w-8 h-8 rounded-full'/>
+                            <span className='hover:underline underline-offset-2 hover:cursor-pointer'><Link to={`/profile/${post.author._id}`}>{post.author?.username}</Link></span>
                             {post.createdAt && <span>{formattedDate(post.createdAt)}</span>}
                         </div>
                         <div className=''>
@@ -110,6 +111,9 @@ export default function Post() {
                                 <img src={post.image} className='w-400 mb-10' alt={post.title}/>
                             )}
                             <p className='text-lg'>{post.content}</p>
+                        </div>
+                        <div className='mt-8 flex gap-2 flex-col'>
+                            <Like post={post} isLiked={isLiked} setPost={setPost}/>
                         </div>
                     </div>
                 )}
@@ -142,10 +146,10 @@ export default function Post() {
                         {comments.map(comment => (
                             <div key={comment._id} className={`border-b-2 border-stone-${theme==="dark" ? "800" : "200"}`}>
                                 <div className='flex gap-3 items-center'>
-                                    <img src={comment.user.avatar} className='w-10 rounded-full'/>
+                                    <img src={comment.user.avatar} className='w-10 h-10 rounded-full'/>
                                     <div>
                                         <p className='text-m font-bold my-0'>{comment.user.username}</p>
-                                        <span className='font-thin text-sm my-0'>{formattedDateComment(post.createdAt)}</span>
+                                        <span className='font-thin text-sm my-0'>{formattedDateComment(comment.createdAt)}</span>
                                     </div>
                                 </div>
                                 <div className='px-2 my-3'>

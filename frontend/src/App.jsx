@@ -11,10 +11,23 @@ import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import { Delete } from "lucide-react";
 import Modal from 'react-modal';
+import AuthorProfile from "./pages/AuthorProfile";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "./redux/features/authSlice";
 
 Modal.setAppElement('#root');
 
 export default function App() {
+    const dispatch = useDispatch()
+    console.log("App got mounted.")
+    //fetchUser dispatch nahi ho raha hai and only God knows why.
+     
+    useEffect(() => {
+        dispatch(fetchUser())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <>
             <Navbar/>
@@ -28,6 +41,7 @@ export default function App() {
                 <Route path="/create" element={<CreatePost/>}/>
                 <Route path='/edit/:id' element={<EditPost/>}/>
                 <Route path='/delete/:id' element={<Delete/>}/>
+                <Route path='/profile/:id' element={<AuthorProfile/>}/>
             </Routes>
         </>
     )

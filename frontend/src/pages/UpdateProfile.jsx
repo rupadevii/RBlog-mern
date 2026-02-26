@@ -1,13 +1,15 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { update } from '../redux/features/authSlice'
 
 export default function UpdateProfile() {
-    const {user, setUser} = useAuth()
+    const {user} = useSelector((state) => state.auth)
     const [file, setFile] = useState(null)
     const [formDetails, setFormDetails] = useState({username: user.username, bio: user.bio || ""})
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     function handleChange(e){
         setFormDetails(prev => ({...prev, [e.target.name]:e.target.value}))
@@ -34,8 +36,11 @@ export default function UpdateProfile() {
                 "Content-Type": "multipart/form-data",
                 },
             })
-            const {updates} = res.data
-            setUser(prev => ({...prev, ...updates}))
+            const updates = {...user, ...res.data.updates}
+
+            //dispatch the update action from authSlice to reflect the changes made on the profile page
+            dispatch(update({user:updates}))
+            // setUser(prev => ({...prev, ...updates}))
 
             setTimeout(() => {
                 navigate("/profile")

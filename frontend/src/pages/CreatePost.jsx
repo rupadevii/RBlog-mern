@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { useTheme } from '../context/ThemeContext'
-import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 export default function CreatePost() {
     const {theme} = useTheme()
-    const {user} = useAuth()
     const [formDetails, setFormDetails] = useState({title: "", content: ""})
     const [file, setFile] = useState(null)
     const [errors, setErrors] = useState({title: "", content: ""})
@@ -60,35 +58,31 @@ export default function CreatePost() {
 
     return (
         <main className={`w-full flex px-50 py-28 ${theme} min-h-screen`}>
-            {!user  ?(
-                <div>Loading...</div>
-            ) : (
-                <section>
-                    <form className='flex flex-col gap-4 items-start' onSubmit={handleSubmit}>
-                        <input 
-                        type='text' 
-                        name='title'
-                        value={formDetails.title}
-                        onChange={handleChange}
-                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
-                        placeholder='Enter Title'/>
-                        {errors.title && (<p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>)}
+            <section className='w-full'>
+                <form className='flex flex-col gap-4 items-center justify-center w-full' onSubmit={handleSubmit}>
+                    <input 
+                    type='text' 
+                    name='title'
+                    value={formDetails.title}
+                    onChange={handleChange}
+                    className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                    placeholder='Enter Title'/>
+                    {errors.title && (<p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>)}
 
-                        <textarea 
-                            rows="15" 
-                            cols="50" 
-                            onChange={handleChange} 
-                            name="content" 
-                            value={formDetails.content}
-                            className='border'></textarea>
-                        {errors.content && (<p className='text-red-500 my-2 self-start ml-3'>{errors.content}</p>)}
+                    <textarea 
+                        rows="15" 
+                        cols="50" 
+                        onChange={handleChange} 
+                        name="content" 
+                        value={formDetails.content}
+                        className='border'></textarea>
+                    {errors.content && (<p className='text-red-500 my-2 self-start ml-3'>{errors.content}</p>)}
 
 
-                        <input type="file" onChange={uploadFile} className='self-center'/>
-                        <button type='submit' className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Create</button>
-                    </form>
-                </section>
-            )}
+                    <input type="file" onChange={uploadFile} className='self-center'/>
+                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Create</button>
+                </form>
+            </section>
         </main>
     )
 }
