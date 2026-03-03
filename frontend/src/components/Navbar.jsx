@@ -48,7 +48,7 @@ export default function Navbar() {
                                 </li>
                                 {user.avatar && (
                                 <li>
-                                    <Link to="/profile">
+                                    <Link to={`/profile/${user._id}`}>
                                         <img src={user.avatar} className='w-7 h-7 rounded-full hover:cursor-pointer' alt={user.username} />
                                     </Link>
                                 </li>

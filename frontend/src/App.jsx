@@ -11,7 +11,6 @@ import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import { Delete } from "lucide-react";
 import Modal from 'react-modal';
-import AuthorProfile from "./pages/AuthorProfile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./redux/features/authSlice";
@@ -36,12 +35,11 @@ export default function App() {
                 <Route path="/post/:id" element={<Post/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
-                <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
+                <Route path="/profile/:id" element={<Profile/>}/>
                 <Route path="/update-profile" element={<ProtectedRoute><UpdateProfile/></ProtectedRoute>}/>
                 <Route path="/create" element={<CreatePost/>}/>
                 <Route path='/edit/:id' element={<EditPost/>}/>
                 <Route path='/delete/:id' element={<Delete/>}/>
-                <Route path='/profile/:id' element={<AuthorProfile/>}/>
             </Routes>
         </>
     )

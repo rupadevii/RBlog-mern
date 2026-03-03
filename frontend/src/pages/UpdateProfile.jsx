@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { update } from '../redux/features/authSlice'
 
@@ -51,12 +51,6 @@ export default function UpdateProfile() {
         }
     }
 
-    function cancelUpdate(){
-        setTimeout(() => {
-            navigate("/profile")
-        }, 1000)
-    }
-
     return (
         <section className={`min-h-screen flex justify-center pt-20`}>
             <form noValidate 
@@ -89,9 +83,11 @@ export default function UpdateProfile() {
                 </div>
 
                 <div className='flex w-full justify-between items-center'>
-                    <button 
+                    <Link to={`/profile/${user._id}`}>
+                        <button 
                         className='border rounded-sm px-3 py-2' 
-                        onClick={cancelUpdate}>Cancel</button>
+                        >Cancel</button>
+                    </Link>
                     <button 
                         type='submit' 
                         className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Update</button>

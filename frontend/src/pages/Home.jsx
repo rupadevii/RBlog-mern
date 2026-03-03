@@ -28,7 +28,7 @@ export default function Home() {
                             <Link to={`/post/${post._id}`}>
                             <div>
                                 <h1 className='font-bold text-2xl my-1'>{post.title}</h1>
-                                <p className={`text-stone-${theme === "dark" ? "200" : "800"} text-md`}>{post.content}</p>
+                                <p className={`${theme === "dark" ? "text-stone-200" : "text-stone-800"} text-md line-clamp-2`}>{post.content}</p>
                             </div>
                             <div className='my-1'>
                                 <div className='text-stone-600'>By <i>{post.author.username}</i></div>

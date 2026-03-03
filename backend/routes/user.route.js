@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserInfo, updateProfile, getUserInfoById, followUser } from "../controllers/user.controller.js";
+import { getUserInfo, updateProfile, getUserInfoById, followUser, unFollowUser } from "../controllers/user.controller.js";
 import {upload} from "../middleware/multer.middleware.js";
 import authMiddleware from "../middleware/auth.middleware.js";
 
@@ -9,5 +9,6 @@ router.get("/profile", authMiddleware, getUserInfo)
 router.post("/profile", authMiddleware, upload.single("profile-pic"), updateProfile)
 router.get("/user-profile/:id", getUserInfoById)
 router.post("/follow/:id", authMiddleware, followUser)
+router.post("/unfollow/:id", authMiddleware, unFollowUser)
 
 export default router;

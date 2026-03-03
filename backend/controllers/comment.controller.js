@@ -1,38 +1,39 @@
 import Comment from "../models/comment.model.js";
+import User from "../models/user.model.js"
 
-export const getComments = async (req, res) => {
-    try {
-        const {postId} = req.params;
+// export const getComments = async (req, res) => {
+//     try {
+//         const {postId} = req.params;
 
-        const comments = await Comment.find({post : postId}).sort({createdAt: -1});
+//         const comments = await Comment.find({post : postId}).sort({createdAt: -1});
 
-        if(!comments){
-            return res.status(404).json({msg: "No comments found."})
-        }
+//         if(comments.length===0){
+//             return res.status(404).json({msg: "No comments found."})
+//         }
 
-        res.status(200).json({msg: "Comments", comments})
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({msg: error.message})
-    }
-}
+//         res.status(200).json({msg: "Comments", comments})
+//     } catch (error) {
+//         console.error(error)
+//         res.status(500).json({msg: error.message})
+//     }
+// }
 
 export const addComment = async (req, res) => {
     try {
         const {content, post} = req.body;
-        const user = req.user.id;
+        const user = await User.findById(req.user.id)
         
         if(!content || !post){
             return res.status(400).json({msg: "Required info is missing."})
         }
 
-        const newComment = await Comment.create({
+        const comment = await Comment.create({
             content,
             post,
             user
         })
 
-        res.status(201).json({msg: "Comment added successfully.", newComment})
+        res.status(201).json({msg: "Comment added successfully.", comment})
 
     } catch (error) {
         console.error(error)

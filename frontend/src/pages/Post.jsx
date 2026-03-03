@@ -19,7 +19,7 @@ export default function Post() {
     const [modalIsOpen, setIsOpen] = useState(false);
     const {theme} = useTheme()
     // const [isLiked, setIsLiked] = useState(false)
-
+    
     function openModal() {
     setIsOpen(true);
     }
@@ -134,7 +134,7 @@ export default function Post() {
                             </Link>
                             to comment</div>
                     ) : (
-                        <CommentForm postId={post._id}/>
+                        <CommentForm postId={post._id} setComments={setComments}/>
                     )}
                 </div>
 

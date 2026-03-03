@@ -54,7 +54,7 @@ export const getPostById = async (req, res) => {
         const {id} = req.params;
 
         const post = await Post.findById(id).populate("author", "username avatar");
-        const comments = await Comment.find({post: id}).populate("user", "username avatar")
+        const comments = await Comment.find({post: id}).populate("user", "username avatar").sort({createdAt: -1})
         
         if(!post){
             return res.status(404).json({msg: "Post not found."})

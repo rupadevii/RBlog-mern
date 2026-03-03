@@ -1,10 +1,8 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
-export default function CommentForm({postId}) {
+export default function CommentForm({postId, setComments}) {
     const [comment, setComment] = useState("")
-    const navigate = useNavigate()
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -13,11 +11,8 @@ export default function CommentForm({postId}) {
             const res = await axios.post(`/api/comments`, {post: postId, content:comment}, {
                 withCredentials: true,
             })
-
-            console.log(res.data)
-            setTimeout(() => {
-                navigate(`/post/${postId}`)
-            }, 1500)
+            setComments(prev => ([res.data.comment, ...prev]))
+            setComment("")
         }
         catch(error){
             console.error(error)
@@ -29,11 +24,11 @@ export default function CommentForm({postId}) {
             className='flex flex-col gap-4 items-start' 
             onSubmit={handleSubmit}>
                 <textarea 
-                    rows="3" 
+                    rows="2" 
                     onChange={(e) => setComment(e.target.value)} 
                     name="content" 
                     value={comment} 
-                    className='border w-full'>
+                    className='border w-full p-3'>
                 </textarea>
                 <button 
                     type='submit' 

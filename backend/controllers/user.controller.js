@@ -67,32 +67,39 @@ export const updateProfile = async (req, res) => {
 
 export const followUser = async (req, res) => {
     try{
-
-        const user = await User.findById(req.user.id);
+        // const user = await User.findById(req.user.id);
     
         const {id} = req.params;
         
-        const author = await User.findById(id)
-        console.log(author.followers)
-        console.log(user)
+        const author = await User.findByIdAndUpdate(id, {$push: {followers: req.user.id}})
+        const user = await User.findByIdAndUpdate(req.user.id, {$push: {following: id}})
+
+        if(!author){
+            return res.status(404).json({msg: "User not found."})
+        }
+        
+        await user.save()
+        res.status(200).json({msg: "Followed Successfully"})
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).json({msg: error.message})
+    }
+        
+}
+
+export const unFollowUser = async (req, res) => {
+    try{    
+        const {id} = req.params;
+        
+        const author = await User.findByIdAndUpdate(id, {$pull: {followers: req.user.id}})
+        const user = await User.findByIdAndUpdate(req.user.id, {$pull: {following: id}})
     
         if(!author){
             return res.status(404).json({msg: "User not found."})
         }
     
-        const follows = author.followers.includes(req.user.id);
-    
-        if(follows){
-            author.followers.pull(req.user.id)
-            user.following.pull(id)
-        }
-        else{
-            author.followers.push(req.user.id)
-            user.following.push(id)
-        }
-        await author.save()
-        await user.save()
-        res.status(200).json({msg: "Successful"})
+        res.status(200).json({msg: "Unfollowed Successfully"})
     }
     catch(error){
         console.error(error.message);
