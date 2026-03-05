@@ -26,3 +26,7 @@ nav{
 button{
     cursor: pointer;
 }
+
+.aside::-webkit-scrollbar{
+    display: none;
+}

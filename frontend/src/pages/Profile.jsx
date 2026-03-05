@@ -32,7 +32,8 @@ export default function Profile() {
             })
             
             setProfile(res.data.user)
-            setIsFollowing(res.data.user.followers.some(item => item._id === user._id))
+            console.log(res.data.user.followers.some(item => item === user._id))
+            setIsFollowing(res.data.user.followers.some(item => item === user._id))
             
         }catch(error){
             console.log(error)
@@ -43,6 +44,7 @@ export default function Profile() {
        if(!user) return
 
         if(user._id !== id){
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             loadProfile()
         }else{
             // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -50,6 +52,7 @@ export default function Profile() {
         }
         loadPosts()
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, id])
 
     async function followAuthor(){
@@ -136,7 +139,9 @@ export default function Profile() {
                     )}
                 <div className='pt-8'>
                     {posts.length===0 ? (
-                        <div>You have not posted anything yet.</div>
+                        <div className='flex justify-center text-lg'>
+                            You have not posted anything yet.
+                        </div>
                     ) : (
                         <div className='flex flex-col gap-4'>
                             {posts.map(post => (

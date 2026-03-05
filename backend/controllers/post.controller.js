@@ -4,11 +4,48 @@ import Comment from "../models/comment.model.js"
 
 export const getPosts = async (req, res) => {
     try{
-        const posts = await Post.find({}).populate("author", "username").sort({createdAt: -1})
+        const posts = await Post.find({}).populate("author", "username avatar").sort({createdAt: -1})
 
         res.status(200).json({msg: "Posts", posts})
 
     } catch (error) {
+        res.status(500).json({error: error.message})
+    }
+}
+
+export const getTrendingPosts = async (req, res) => {
+    try{
+        const trendingPosts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $project: {
+                    title: 1,
+                    'author.username': 1,
+                    'author.avatar': 1,
+                    image: 1,
+                    createdAt: 1,
+                    likeCount: { $size: "$likes" }
+                }
+            },
+            {
+                $sort: {likeCount: -1}
+            }
+        ])
+
+        if(trendingPosts.length===0){
+            return res.status(404).json({msg: "No trending Posts found"})
+        }
+        
+        res.status(200).json({msg: "Trending Posts", trendingPosts})
+    }
+    catch(error){
         res.status(500).json({error: error.message})
     }
 }

@@ -47,9 +47,9 @@ export default function CreatePost() {
             })
 
             console.log(res.data)
-            setTimeout(() => {
-                navigate("/")
-            }, 1500)
+            
+            navigate("/")
+            
         }
         catch(error){
             console.error(error)

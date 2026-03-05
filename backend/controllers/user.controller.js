@@ -5,7 +5,7 @@ const SALT_ROUNDS = 10
 
 export const getUserInfo = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user.id, {password: false});
         
         res.status(200).json({msg:"User Info", user})
     } catch (error) {
@@ -17,7 +17,7 @@ export const getUserInfo = async (req, res) => {
 export const getUserInfoById = async (req, res) => {
     try {
         const {id} = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(id, {password:false});
         
         res.status(200).json({msg:"User Info", user})
     } catch (error) {
@@ -106,4 +106,30 @@ export const unFollowUser = async (req, res) => {
         res.status(500).json({msg: error.message})
     }
         
+}
+
+export const suggestedFollows = async (req, res) => {
+    try{
+        const users = await User.aggregate([
+            {
+                $addFields: {
+                    followersCount: { $size: "$followers"}
+                }
+            },
+            {
+                $sort: { followersCount: -1}
+            },
+            {
+                $limit: 3
+            }
+        ])
+        
+        if(users.length===0){
+            return res.status(400).json({msg: "No users found"})
+        }
+        res.status(200).json({msg: "Suggested follows", users})
+
+    }catch(error){
+
+    }
 }

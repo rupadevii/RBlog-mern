@@ -106,7 +106,7 @@ export default function Post() {
                             <span className='hover:underline underline-offset-2 hover:cursor-pointer'><Link to={`/profile/${post.author._id}`}>{post.author?.username}</Link></span>
                             {post.createdAt && <span>{formattedDate(post.createdAt)}</span>}
                         </div>
-                        <div className=''>
+                        <div className='mt-10'>
                             {post.image && (
                                 <img src={post.image} className='w-400 mb-10' alt={post.title}/>
                             )}
