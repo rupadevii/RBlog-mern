@@ -124,7 +124,6 @@ export const getPostsByUserId = async (req, res) => {
 export const editPost = async (req, res) => {
     try {
         const {id} = req.params;
-        console.log(req.file)
         const {title, content} = req.body;
 
         let updates = {};
@@ -140,7 +139,7 @@ export const editPost = async (req, res) => {
                 resource_type: "auto"
             })
 
-            updates.result = result;
+            updates.image = result.secure_url;
         }
 
         if(title) updates.title = title;

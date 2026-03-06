@@ -140,7 +140,7 @@ export default function Profile() {
                 <div className='pt-8'>
                     {posts.length===0 ? (
                         <div className='flex justify-center text-lg'>
-                            You have not posted anything yet.
+                                No Posts.
                         </div>
                     ) : (
                         <div className='flex flex-col gap-4'>

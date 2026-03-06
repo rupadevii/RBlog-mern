@@ -1,6 +1,5 @@
 import cloudinary from "../config/cloudinary.config.js";
 import User from "../models/user.model.js";
-import bcrypt from "bcrypt"
 const SALT_ROUNDS = 10
 
 export const getUserInfo = async (req, res) => {
@@ -110,7 +109,16 @@ export const unFollowUser = async (req, res) => {
 
 export const suggestedFollows = async (req, res) => {
     try{
+        // console.log(req.user)
+        const user = await User.findById(req.user.id);
+
         const users = await User.aggregate([
+            {
+                $match: {
+                    _id: {$ne: req.user.id},
+                    _id: {$nin: user.following}
+                }
+            },
             {
                 $addFields: {
                     followersCount: { $size: "$followers"}
@@ -130,6 +138,6 @@ export const suggestedFollows = async (req, res) => {
         res.status(200).json({msg: "Suggested follows", users})
 
     }catch(error){
-
+        res.status(500).json({msg: error.message})
     }
 }

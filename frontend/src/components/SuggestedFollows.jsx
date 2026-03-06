@@ -52,38 +52,40 @@ export default function SuggestedFollows() {
     }    
 
     return (
-        <div className='pb-12 pt-8'>
-            <h2 className='text-xl font-bold'>Who To Follow</h2>
+        <div className='pb-12 pt-3'>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <div className='py-3'>
-                    {users.map((user, index) => (
-                        <div className={`px-5 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={user._id}>
-                            <div className='flex gap-3 items-center my-1 justify-between'>
-                                <Link to={`/profile/${user._id}`}>
-                                <div className='flex gap-3 items-center'>
-                                    <img src={user.avatar} className='w-8 h-8 rounded-full'/>
+                <div>
+                    <h2 className='text-xl font-bold'>Who To Follow</h2>
+                    <div className='py-4'>
+                        {users.map((user, index) => (
+                            <div className={`my-2 px-5 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={user._id}>
+                                <div className='flex gap-3 items-center my-1 justify-between'>
+                                    <Link to={`/profile/${user._id}`}>
+                                    <div className='flex gap-3 items-center'>
+                                        <img src={user.avatar} className='w-8 h-8 rounded-full'/>
+                                        <div>
+                                            <h2 className='font-semibold hover:underline underline-offset-1'>{user.username}</h2>
+                                            <p>{user.bio}</p>
+                                        </div>
+                                    </div>
+                                    </Link>
                                     <div>
-                                        <h2>{user.username}</h2>
-                                        <p>{user.bio}</p>
+                                        {following[index] ? (
+                                            <button className='border rounded-2xl px-3 py-1' onClick={() => followAuthor(user._id, index)}>
+                                                UnFollow
+                                            </button>
+                                        ) : (
+                                            <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
+                                                Follow
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
-                                </Link>
-                                <div>
-                                    {following[index] ? (
-                                        <button className='border rounded-2xl px-3 py-1' onClick={() => followAuthor(user._id, index)}>
-                                            UnFollow
-                                        </button>
-                                    ) : (
-                                        <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
-                                            Follow
-                                        </button>
-                                    )}
-                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
