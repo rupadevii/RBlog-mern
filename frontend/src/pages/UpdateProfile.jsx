@@ -7,6 +7,7 @@ import { update } from '../redux/features/authSlice'
 export default function UpdateProfile() {
     const {user} = useSelector((state) => state.auth)
     const [file, setFile] = useState(null)
+    const [fileDataURL, setFileDataURL] = useState(user.avatar)
     const [formDetails, setFormDetails] = useState({username: user.username, bio: user.bio || ""})
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -17,6 +18,16 @@ export default function UpdateProfile() {
 
     function uploadFile(e){
         setFile(e.target.files[0])
+        const fileReader = new FileReader()
+
+        fileReader.onload = (e) => {
+            const {result} = e.target
+            if(result){
+                setFileDataURL(result)
+            }
+        }
+
+        fileReader.readAsDataURL(e.target.files[0])
     }
 
     
@@ -40,11 +51,8 @@ export default function UpdateProfile() {
 
             //dispatch the update action from authSlice to reflect the changes made on the profile page
             dispatch(update({user:updates}))
-            // setUser(prev => ({...prev, ...updates}))
 
-            setTimeout(() => {
-                navigate("/profile")
-            }, 1500)
+            navigate(`/profile/${user._id}`)
         }
         catch(error){
             console.error(error)
@@ -55,8 +63,17 @@ export default function UpdateProfile() {
         <section className={`min-h-screen flex justify-center pt-20`}>
             <form noValidate 
                 className='flex flex-col rounded-md p-10 items-center gap-4' onSubmit={handleSubmit}>
-                <img src={user.avatar} className='w-30 h-30 rounded-full'/>
-                <input type="file" onChange={uploadFile} className='self-center'/>
+                
+                <input 
+                    type="file" 
+                    onChange={uploadFile} 
+                    className='self-center' 
+                    style={{display: "none"}} 
+                    accept=".png, .jpg, image/png, image/jpeg"
+                    id='file'/>
+                <label htmlFor='file'>
+                    <img src={fileDataURL} className='w-30 h-30 rounded-full'/>
+                </label>
 
                 <div className='flex flex-col'>
                     <label htmlFor='username'>Username:</label>
@@ -66,7 +83,7 @@ export default function UpdateProfile() {
                         name='username'
                         value={formDetails.username}
                         onChange={handleChange}
-                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        className='my-2 p-3 w-100 border border-zinc-500 rounded-sm'
                         />
                 </div>
 
@@ -78,7 +95,7 @@ export default function UpdateProfile() {
                         id='bio'
                         value={formDetails.bio}
                         onChange={handleChange}
-                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        className='my-2 p-3 w-100 border border-zinc-500 rounded-sm'
                         placeholder='Enter bio'/>
                 </div>
 

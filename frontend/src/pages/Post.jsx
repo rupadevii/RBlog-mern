@@ -8,6 +8,7 @@ import Modal from 'react-modal'
 import { useTheme } from '../context/ThemeContext'
 import Like from '../components/Like'
 import { useSelector } from 'react-redux'
+import { formattedDate } from '../utils/date'
 
 export default function Post() {
     const {id} = useParams()
@@ -40,12 +41,6 @@ export default function Post() {
             backgroundColor: theme==="dark" ? "black" : "white"
         },
     };
-
-    const formattedDate = (createdAt) => {
-        const date = new Date(createdAt)
-        const options = { day: '2-digit', month: 'short', year: 'numeric' };
-        return new Intl.DateTimeFormat('en-GB', options).format(date);
-    }
 
     const formattedDateComment = (createdAt) => {
         const date = new Date(createdAt)

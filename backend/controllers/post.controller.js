@@ -1,6 +1,7 @@
 import cloudinary from "../config/cloudinary.config.js"
 import Post from "../models/post.model.js"
 import Comment from "../models/comment.model.js"
+import User from "../models/user.model.js"
 
 export const getPosts = async (req, res) => {
     try{
@@ -193,6 +194,25 @@ export const likePost = async (req, res) => {
         res.status(200).json({msg: "Post liked successfully.", post})
     } catch (error) {
         console.error(error)
+        res.status(500).json({msg: error.message})
+    }
+}
+
+export const searchPosts = async (req, res) => {
+    try{
+        const query = req.query.q
+    
+        const posts = await Post.find({
+            title: {$regex: query, $options: "i"}
+        }).limit(3).sort({createdAt: -1})
+
+        const users = await User.find({
+            username: {$regex: query, $options: "i"}
+        }).limit(3).sort({createdAt: -1})
+
+        res.status(200).json({msg: "Search successful", posts, users})
+    }
+    catch(error){
         res.status(500).json({msg: error.message})
     }
 }

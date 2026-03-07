@@ -115,7 +115,7 @@ export const suggestedFollows = async (req, res) => {
         const users = await User.aggregate([
             {
                 $match: {
-                    _id: {$ne: req.user.id},
+                    _id: {$ne: user._id},
                     _id: {$nin: user.following}
                 }
             },
