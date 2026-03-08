@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { logout } from '../redux/features/authSlice'
 import { useState } from "react"
-import SearchSuggestions from "./SearchSuggestions"
+import SearchSuggestions from "./search/SearchSuggestions"
 
 export default function Navbar() {
     const location = useLocation()
@@ -38,12 +38,15 @@ export default function Navbar() {
         setShowSuggestions(true)
         setInput(e.target.value)
         if(e.key === "Enter"){
-            navigate(`/search?title=${input}`);
+            setShowSuggestions(false)
+            navigate(`/search/posts?q=${input}`);
         }
     }
 
     return (
-        <nav className='w-full fixed top-0 bg-red-800 p-5 flex pl-20 pr-12 justify-between items-center' onClick={() => setShowSuggestions(false)}>
+        <nav 
+        className='w-full fixed top-0 bg-red-800 p-5 flex pl-20 pr-12 justify-between items-center' 
+        onClick={() => setShowSuggestions(false)}>
             <div className='flex gap-9 items-center ml-10'>
                 <Link to="/"><span className='text-lg'>Haha</span></Link>
                 <div className='flex items-center relative'>

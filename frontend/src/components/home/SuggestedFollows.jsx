@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export default function SuggestedFollows() {
     const {theme} = useTheme();
     const [users, setUsers] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [following, setFollowing] = useState(new Array(3).fill(false))
             
     useEffect(() => {

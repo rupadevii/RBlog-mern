@@ -204,11 +204,11 @@ export const searchPosts = async (req, res) => {
     
         const posts = await Post.find({
             title: {$regex: query, $options: "i"}
-        }).limit(3).sort({createdAt: -1})
+        }).limit(10).sort({createdAt: -1}).populate("author", "username avatar")
 
         const users = await User.find({
             username: {$regex: query, $options: "i"}
-        }).limit(3).sort({createdAt: -1})
+        }).limit(10).sort({createdAt: -1})
 
         res.status(200).json({msg: "Search successful", posts, users})
     }

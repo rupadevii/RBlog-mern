@@ -1,24 +1,13 @@
-import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useTheme } from '../context/ThemeContext'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchPosts } from '../redux/features/postSlice'
-import TrendingPosts from '../components/home/TrendingPosts'
-import SuggestedFollows from '../components/home/SuggestedFollows'
+import React from 'react'
+import { Link, useOutletContext } from 'react-router-dom'
+import { useTheme } from '../../context/ThemeContext'
 
-export default function Home() {
-    const {posts, loading} = useSelector((state) => state.post)
-    const dispatch = useDispatch()
-    const {theme} = useTheme();
+export default function SearchPosts() {
+    const {posts, loading} = useOutletContext()
+    const {theme} = useTheme()
 
-    useEffect(() => {
-        dispatch(fetchPosts())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
     return (
-        <main className={`w-full flex py-20 min-h-screen gap-15`}>
-            <section className='flex justify-center w-275 py-8'>
+        <section className='py-4'>
             {loading ? (
                 <div className='flex justify-center'>
                     <h1>Loading...</h1>
@@ -48,12 +37,6 @@ export default function Home() {
                     ))}
                 </div>
             )}
-            </section> 
-            <aside className='aside w-110 border-l-2 border-stone-300 fixed right-0 px-10 py-8 h-screen overflow-y-auto'>
-                <TrendingPosts/>
-
-                <SuggestedFollows/>
-            </aside>
-        </main> 
+        </section>
     )
 }

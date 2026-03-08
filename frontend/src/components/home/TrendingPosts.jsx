@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { formattedDate } from '../utils/date'
+import { formattedDate } from '../../utils/date'
 import { useEffect, useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 import { Link } from 'react-router-dom';
 
 export default function TrendingPosts() {

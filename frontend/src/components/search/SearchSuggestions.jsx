@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useTheme } from '../context/ThemeContext'
+import { useTheme } from '../../context/ThemeContext'
+import { Link } from 'react-router-dom'
 
 export default function SearchSuggestions({input}) {
     const [posts, setPosts] = useState([])
@@ -17,7 +18,6 @@ export default function SearchSuggestions({input}) {
             }catch(error){
                 console.error(error)
             }
-
         }
         fetchSearchResults()
     }, [input])
@@ -28,7 +28,7 @@ export default function SearchSuggestions({input}) {
                 <ul>
                     <li className='underline underline-offset-2'>POSTS</li>
                     {posts.map(post => (
-                        <li className=' overflow-ellipsis my-1 hover:bg-stone-600 p-2'>{post.title}</li>
+                        <Link to={`/post/${post._id}`}><li key={post._id} className=' overflow-ellipsis my-1 hover:bg-stone-600 p-2'>{post.title}</li></Link>
                     ))}
                 </ul>  
             )}
@@ -36,7 +36,7 @@ export default function SearchSuggestions({input}) {
                 <ul>
                     <li className='underline underline-offset-2 mb-2'>USERS</li>
                     {users.map(user => (
-                        <li className='p-2 hover:bg-stone-700'>{user.username}</li>
+                        <Link to={`/profile/${user._id}`}><li className='p-2 hover:bg-stone-700'>{user.username}</li></Link>
                     ))}
                 </ul>
             )}

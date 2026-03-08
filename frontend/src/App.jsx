@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./redux/features/authSlice";
 import Search from "./pages/Search";
+import SearchUsers from "./components/search/SearchUsers";
+import SearchPosts from "./components/search/SearchPosts";
 
 Modal.setAppElement('#root');
 
@@ -41,7 +43,10 @@ export default function App() {
                 <Route path="/create" element={<CreatePost/>}/>
                 <Route path='/edit/:id' element={<EditPost/>}/>
                 <Route path='/delete/:id' element={<Delete/>}/>
-                <Route path='/search' element={<Search/>}/>
+                <Route path='/search' element={<Search/>}>
+                    <Route path='posts' element={<SearchPosts/>}/>
+                    <Route path='users' element={<SearchUsers/>}/>
+                </Route>
             </Routes>
         </>
     )
