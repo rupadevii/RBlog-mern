@@ -30,3 +30,7 @@ button{
 .aside::-webkit-scrollbar{
     display: none;
 }
+
+.search::-webkit-scrollbar{
+    display: none;
+}

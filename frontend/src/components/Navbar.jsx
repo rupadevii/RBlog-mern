@@ -36,10 +36,16 @@ export default function Navbar() {
 
     function handleKeyDown(e){
         setShowSuggestions(true)
-        setInput(e.target.value)
         if(e.key === "Enter"){
             setShowSuggestions(false)
             navigate(`/search/posts?q=${input}`);
+        }
+    }
+
+    function handleChange(e){
+        setInput(e.target.value)
+        if(e.target.value===""){
+            setShowSuggestions(false)
         }
     }
 
@@ -54,7 +60,7 @@ export default function Navbar() {
                     <input 
                         type="text" 
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={handleChange}
                         onKeyDown={handleKeyDown}
                         className='border border-white rounded-xl p-1 pl-8 relative'/>
                 </div>

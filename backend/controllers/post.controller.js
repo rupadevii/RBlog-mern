@@ -91,8 +91,10 @@ export const getPostById = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const post = await Post.findById(id).populate("author", "username avatar");
-        const comments = await Comment.find({post: id}).populate("user", "username avatar").sort({createdAt: -1})
+        const [post, comments] = await Promise.all([
+            Post.findById(id).populate("author", "username avatar"),
+            Comment.find({post: id}).populate("user", "username avatar").sort({createdAt: -1})
+        ]) 
         
         if(!post){
             return res.status(404).json({msg: "Post not found."})
@@ -200,16 +202,17 @@ export const likePost = async (req, res) => {
 
 export const searchPosts = async (req, res) => {
     try{
-        const query = req.query.q
-    
-        const posts = await Post.find({
+        const query = req.query.q;
+
+        const [posts, users] = await Promise.all([
+            Post.find({
             title: {$regex: query, $options: "i"}
-        }).limit(10).sort({createdAt: -1}).populate("author", "username avatar")
-
-        const users = await User.find({
+            }).limit(10).sort({createdAt: -1}).populate("author", "username avatar"),
+            User.find({
             username: {$regex: query, $options: "i"}
-        }).limit(10).sort({createdAt: -1})
-
+            }).limit(10).sort({createdAt: -1})
+        ])
+        
         res.status(200).json({msg: "Search successful", posts, users})
     }
     catch(error){
