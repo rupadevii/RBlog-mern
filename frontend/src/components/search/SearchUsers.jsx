@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 export default function SearchUsers() {
     const {users, loading} = useOutletContext()
     const {theme} = useTheme()
-    const [following, setFollowing] = useState(new Array(users.length).fill(false))
-    
+    const {user} = useSelector((state) => state.auth)
+    const [following, setFollowing] = useState([])
+
+    useEffect(() => {
+        setFollowing(users.map(ele => ele.followers.includes(user._id)))
+    }, [user._id, users])
+
     async function followAuthor(id, idx){
         try{
             const res = await axios.post(`/api/user/follow/${id}`, {}, {
@@ -44,27 +50,30 @@ export default function SearchUsers() {
             ) : (
                 <div>
                     {users.length > 0 ? (
-                        users.map((user, index) => (
-                            <div className={`my-2 px-5 w-150 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={user._id}>
+                        users.map((item, index) => (
+                            <div className={`my-2 px-5 w-150 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={item._id}>
                                 <div className='flex gap-3 items-center my-1 justify-between'>
-                                    <Link to={`/profile/${user._id}`}>
+                                    <Link to={`/profile/${item._id}`}>
                                     <div className='flex gap-3 items-center'>
-                                        <img src={user.avatar} className='w-8 h-8 rounded-full'/>
+                                        <img src={item.avatar} className='w-8 h-8 rounded-full'/>
                                         <div>
-                                            <h2 className='font-semibold hover:underline underline-offset-1'>{user.username}</h2>
-                                            <p>{user.bio}</p>
+                                            <h2 className='font-semibold hover:underline underline-offset-1'>{item.username}</h2>
+                                            <p>{item.bio}</p>
                                         </div>
                                     </div>
                                     </Link>
                                     <div>
                                         {following[index] ? (
+                                        // {user.following.includes(item._id) ? (
                                             <button className='border rounded-2xl px-3 py-1' onClick={() => followAuthor(user._id, index)}>
                                                 UnFollow
                                             </button>
                                         ) : (
-                                            <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
-                                                Follow
-                                            </button>
+                                            item._id !== user._id && (
+                                                <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
+                                                    Follow
+                                                </button>
+                                            )
                                         )}
                                     </div>
                                 </div>

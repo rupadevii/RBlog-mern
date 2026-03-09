@@ -2,19 +2,20 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPosts } from '../redux/features/postSlice'
+import {ChevronLeft, ChevronRight} from 'lucide-react'
+import { decreasePage, fetchPosts, increasePage } from '../redux/features/postSlice'
 import TrendingPosts from '../components/home/TrendingPosts'
 import SuggestedFollows from '../components/home/SuggestedFollows'
 
 export default function Home() {
-    const {posts, loading} = useSelector((state) => state.post)
+    const {posts, loading, page} = useSelector((state) => state.post)
     const dispatch = useDispatch()
     const {theme} = useTheme();
 
     useEffect(() => {
-        dispatch(fetchPosts())
+        dispatch(fetchPosts(page))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [page])
     
     return (
         <main className={`w-full flex py-20 min-h-screen gap-15`}>
@@ -46,6 +47,10 @@ export default function Home() {
                         </div>
                         </Link>
                     ))}
+                <div className='flex justify-center my-4 gap-2'>
+                    <button onClick={() => dispatch(decreasePage())} className='border rounded-md p-1 hover:bg-red-800'><ChevronLeft /></button>
+                    <button onClick={() => dispatch(increasePage())} className='border rounded-md p-1 hover:bg-red-800'><ChevronRight/></button>
+                </div>
                 </div>
             )}
             </section> 

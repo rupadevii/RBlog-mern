@@ -5,7 +5,10 @@ import User from "../models/user.model.js"
 
 export const getPosts = async (req, res) => {
     try{
-        const posts = await Post.find({}).populate("author", "username avatar").sort({createdAt: -1})
+        const {page} = req.query;
+        const size = 20
+
+        const posts = await Post.find({}).skip((page-1)*size).limit(size).populate("author", "username avatar").sort({createdAt: -1})
 
         res.status(200).json({msg: "Posts", posts})
 
@@ -205,11 +208,9 @@ export const searchPosts = async (req, res) => {
         const query = req.query.q;
 
         const [posts, users] = await Promise.all([
-            Post.find({
-            title: {$regex: query, $options: "i"}
+            Post.find({title: {$regex: query, $options: "i"}
             }).limit(10).sort({createdAt: -1}).populate("author", "username avatar"),
-            User.find({
-            username: {$regex: query, $options: "i"}
+            User.find({username: {$regex: query, $options: "i"}
             }).limit(10).sort({createdAt: -1})
         ])
         
