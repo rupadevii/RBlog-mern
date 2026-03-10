@@ -31,6 +31,10 @@ button{
     display: none;
 }
 
-.search::-webkit-scrollbar{
+.text-input::-webkit-scrollbar, .search::-webkit-scrollbar{
     display: none;
+}
+
+.dark-border{
+    border: 2px solid black;
 }

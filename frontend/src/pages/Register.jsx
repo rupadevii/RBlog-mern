@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import { useTheme } from '../context/ThemeContext';
+import { Moon, Sun } from 'lucide-react';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Register() {
@@ -8,6 +10,9 @@ export default function Register() {
     const [errors, setErrors] = useState({})
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
+    const {theme} = useTheme()
+
+    const color = theme === "dark" ? "text-white" : "text-black"
 
     function handleChange(e){
         const {name, value} = e.target
@@ -67,8 +72,8 @@ export default function Register() {
     return (
         <main className={`h-screen flex justify-center items-center`}>
             <div>
-                <form noValidate className='flex flex-col border border-gray-400 rounded-md px-9 py-9 items-center' onSubmit={handleSubmit}>
-                    <h2 className='text-center text-xl mb-4'>Register</h2>
+                <form noValidate className="flex flex-col border-2 rounded-md px-9 py-9 items-center shadow-lg" onSubmit={handleSubmit}>
+                    <h2 className='text-center text-2xl mb-4'>Register</h2>
                     
                     {(msg.success || msg.err) && <p className={`${msg.success ? "text-green-600" : "text-red-600"} mb-2 text-lg`}>{msg.success || msg.err}</p>}
 
@@ -77,7 +82,7 @@ export default function Register() {
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        className='m-2 p-3 w-75 border border-zinc-400 rounded-sm'
+                        className='m-2 p-3 w-75 border-2 rounded-sm' 
                         placeholder='Enter your name'/>
                     {errors.name && (<p className='text-red-500 my-2 self-start ml-3'>{errors.name}</p>)}
 
@@ -86,7 +91,7 @@ export default function Register() {
                         name='email'
                         value={formData.email}
                         onChange={handleChange}
-                        className='m-2 p-3 w-75 border border-zinc-400 rounded-sm'
+                        className='m-2 p-3 w-75 border-2 rounded-sm'
                         placeholder='Enter your email'/>
                     {errors.email && (<p className='text-red-500 my-2 self-start ml-3'>{errors.email}</p>) }
 
@@ -95,18 +100,20 @@ export default function Register() {
                         name='password'
                         value={formData.password}
                         onChange={handleChange}
-                        className='m-2 p-3 w-75 border border-zinc-400 rounded-sm'
+                        className='m-2 p-3 w-75 border-2 rounded-sm'
                         placeholder='Enter password'/>
                     {errors.password && (<p className='text-red-500 my-2 self-start ml-3'>{errors.password}</p>)}
 
                     <button 
                         type='submit' 
-                        className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white'
-                        >Register</button>
-                    <p className="mt-5 text-zinc-400">
+                        className='bg-red-900 text-white px-3 py-2 rounded-md mt-4 hover:bg-red-800'
+                        >Register
+                    </button>
+
+                    <p className={`mt-5 ${color}`}>
                         Already have an account?{" "}
                         <span 
-                        className="text-red-900 underline hover:text-white">
+                        className={`text-red-900 underline ${theme==="dark" ? "hover:text-white" : "hover:text-black"}`}>
                         <Link to="/login">Login</Link>
                         </span>{" "}
                         here.

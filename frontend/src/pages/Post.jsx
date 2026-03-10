@@ -73,16 +73,16 @@ export default function Post() {
     const isLiked = user !== null && post.likes && post.likes.includes(user._id)
     
     return (
-        <main className={`mt-18 px-60 min-h-screen`}>
-            <section className='pt-10 pb-6 px-18 border-b-2 border-gray-300'>
+        <main className={`mt-18 w-full flex justify-center flex-col items-center`}>
+            <section className='pt-10 pb-6 border-b-2 border-gray-300 w-100 md:w-170 lg:w-220'>
                 {postLoading ? (
                     <div className='flex items-center justify-center'>Loading</div>
                 ) : (
                     <div>
-                        <div className='flex justify-between items-center'>
-                            <h1 className='text-5xl font-bold my-5'>{post.title}</h1>
+                        <div className='flex justify-between items-center gap-10'>
+                            <h1 className='text-5xl font-bold my-5 leading-13'>{post.title}</h1>
                             {user && post.author._id === user._id && (
-                                <div className='flex gap-2 items-center'>
+                                <div className='flex gap-2 items-center flex-col lg:flex-row'>
                                     <button className='bg-green-700 rounded-xl p-3 hover:bg-green-600' onClick={editPost}><Pencil size={18} color='white'/></button>
                                     <button className='bg-red-700 rounded-xl p-3 gap-2 hover:bg-red-600' onClick={openModal}><Trash size={18} color='white'/></button>
                                     <Modal
@@ -105,7 +105,7 @@ export default function Post() {
                             {post.image && (
                                 <img src={post.image} className='w-400 mb-10' alt={post.title}/>
                             )}
-                            <p className='text-lg'>{post.content}</p>
+                            <p className='text-xl leading-normal'>{post.content}</p>
                         </div>
                         <div className='mt-8 flex gap-2 flex-col'>
                             <Like post={post} isLiked={isLiked} setPost={setPost}/>
@@ -114,7 +114,7 @@ export default function Post() {
                 )}
             </section>
             
-            <section className='pt-6 pb-6 px-10'>
+            <section className='pt-6 pb-6 px-10 w-100 md:w-170 lg:w-220'>
                 <div className='border-b-2 border-stone-200 pb-6'>
                     <h1 className='text-xl font-bold my-2'>Comments ({comments.length})</h1>
 

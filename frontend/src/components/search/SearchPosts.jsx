@@ -17,7 +17,7 @@ export default function SearchPosts() {
                     {posts.length>0 ? (
                         posts.map(post => (
                             <Link to={`/post/${post._id}`}>
-                            <div className='p-5 shadow-lg w-200 flex gap-4 justify-between items-center' key={post._id}>
+                            <div className='p-5 shadow-lg w-100 md:w-150 lg:w-200 flex gap-4 justify-between items-center' key={post._id}>
                                 <div className='flex-7'>
                                     <div>
                                         <h1 className='font-bold text-2xl my-1 line-clamp-2'>{post.title}</h1>

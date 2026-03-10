@@ -60,57 +60,59 @@ export default function UpdateProfile() {
     }
 
     return (
-        <section className={`min-h-screen flex justify-center pt-20`}>
-            <form noValidate 
-                className='flex flex-col rounded-md p-10 items-center gap-4' onSubmit={handleSubmit}>
-                
-                <input 
-                    type="file" 
-                    onChange={uploadFile} 
-                    className='self-center' 
-                    style={{display: "none"}} 
-                    accept=".png, .jpg, image/png, image/jpeg"
-                    id='file'/>
-                <label htmlFor='file'>
-                    <img src={fileDataURL} className='w-30 h-30 rounded-full'/>
-                </label>
-
-                <div className='flex flex-col'>
-                    <label htmlFor='username'>Username:</label>
-                    <input 
-                        type='text'
-                        id='username' 
-                        name='username'
-                        value={formDetails.username}
-                        onChange={handleChange}
-                        className='my-2 p-3 w-100 border border-zinc-500 rounded-sm'
-                        />
-                </div>
-
-                <div className='flex flex-col'>
-                    <label htmlFor='bio'>Bio:</label>
-                    <input 
-                        type="text" 
-                        name='bio'
-                        id='bio'
-                        value={formDetails.bio}
-                        onChange={handleChange}
-                        className='my-2 p-3 w-100 border border-zinc-500 rounded-sm'
-                        placeholder='Enter bio'/>
-                </div>
-
-                <div className='flex w-full justify-between items-center'>
-                    <Link to={`/profile/${user._id}`}>
-                        <button 
-                        className='border rounded-sm px-3 py-2' 
-                        >Cancel</button>
-                    </Link>
-                    <button 
-                        type='submit' 
-                        className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Update</button>
-                </div>
+        <main className='w-full flex py-28'>
+            <section className="min-h-screen flex justify-center w-full">
+                <form noValidate 
+                    className='flex flex-col items-center gap-4' onSubmit={handleSubmit}>
                     
-            </form>
-        </section>
+                    <input 
+                        type="file" 
+                        onChange={uploadFile} 
+                        className='self-center' 
+                        style={{display: "none"}} 
+                        accept=".png, .jpg, image/png, image/jpeg"
+                        id='file'/>
+                    <label htmlFor='file'>
+                        <img src={fileDataURL} className='w-30 h-30 rounded-full'/>
+                    </label>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor='username'>Username:</label>
+                        <input 
+                            type='text'
+                            id='username' 
+                            name='username'
+                            value={formDetails.username}
+                            onChange={handleChange}
+                            className='my-2 p-3 w-80 lg:w-100 border border-zinc-500 rounded-sm'
+                            />
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor='bio'>Bio:</label>
+                        <input 
+                            type="text" 
+                            name='bio'
+                            id='bio'
+                            value={formDetails.bio}
+                            onChange={handleChange}
+                            className='my-2 p-3 w-80 lg:w-100 border border-zinc-500 rounded-sm'
+                            placeholder='Enter bio'/>
+                    </div>
+
+                    <div className='flex w-full justify-between items-center'>
+                        <Link to={`/profile/${user._id}`}>
+                            <button 
+                            className='border rounded-sm px-3 py-2' 
+                            >Cancel</button>
+                        </Link>
+                        <button 
+                            type='submit' 
+                            className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Update</button>
+                    </div>
+                        
+                </form>
+            </section>
+        </main>
     )
 }

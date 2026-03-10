@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch} from 'react-redux';
 import axios from 'axios';
 import { login } from '../redux/features/authSlice';
+import { useTheme } from '../context/ThemeContext';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Login() {
@@ -11,6 +12,9 @@ export default function Login() {
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const {theme} = useTheme()
+    
+    const color = theme === "dark" ? "text-white" : "text-black"
  
     function handleChange(e){
         const {name, value} = e.target
@@ -63,10 +67,10 @@ export default function Login() {
     }
 
     return (
-        <main className={`h-screen flex justify-center items-center`}>
+        <main className='h-screen flex justify-center items-center'>
             <div>
-                <form noValidate className='flex flex-col border border-gray-400 rounded-md p-10 items-center' onSubmit={handleSubmit}>
-                    <h2 className='text-center text-xl mb-4'>Login</h2>
+                <form noValidate className="flex flex-col border-2 rounded-md p-10 px-12 items-center shadow-xl" onSubmit={handleSubmit}>
+                    <h2 className='text-center text-2xl mb-4'>Login</h2>
                     {(msg.success || msg.err) && <p className={`${msg.success ? "text-green-600" : "text-red-600"} mb-2`}>{msg.success || msg.err}</p>}
 
                     <input 
@@ -74,7 +78,7 @@ export default function Login() {
                         name='email'
                         value={formData.email}
                         onChange={handleChange}
-                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        className="my-2 p-3 w-75 border-2 rounded-sm"
                         placeholder='Enter your email'/>
                     {errors.email && (<p className='text-red-500 my-2 self-start ml-3'>{errors.email}</p>)}
 
@@ -83,17 +87,16 @@ export default function Login() {
                         name='password'
                         value={formData.password}
                         onChange={handleChange}
-                        className='my-2 p-3 w-75 border border-zinc-500 rounded-sm'
+                        className="my-2 p-3 w-75 border-2 rounded-sm"
                         placeholder='Enter password'/>
                     {errors.password && (<p className='text-red-500 my-2 self-start ml-3'>{errors.password}</p>)}
 
                     <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white'>Login</button>
-                    <p className="mt-5 text-zinc-400">
+                    <p className={`mt-5 ${color}`}>
                         Don't have an account?{" "}
-                        <span className="text-red-900 underline hover:text-white">
-                        <Link to="/register">Sign Up</Link>
-                        </span>{" "}
-                        now.
+                        <span className={`text-red-900 underline ${theme === "dark" ? "hover:text-white" : "hover:text-black"}`}>
+                        <Link to="/register">Sign Up.</Link>
+                        </span>
                     </p>
                 </form>
             </div>

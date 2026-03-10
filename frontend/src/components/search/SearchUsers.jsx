@@ -11,6 +11,7 @@ export default function SearchUsers() {
     const [following, setFollowing] = useState([])
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFollowing(users.map(ele => ele.followers.includes(user._id)))
     }, [user._id, users])
 
@@ -51,7 +52,7 @@ export default function SearchUsers() {
                 <div>
                     {users.length > 0 ? (
                         users.map((item, index) => (
-                            <div className={`my-2 px-5 w-150 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={item._id}>
+                            <div className={`my-2 px-5 lg:w-150 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={item._id}>
                                 <div className='flex gap-3 items-center my-1 justify-between'>
                                     <Link to={`/profile/${item._id}`}>
                                     <div className='flex gap-3 items-center'>

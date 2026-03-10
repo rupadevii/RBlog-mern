@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { EllipsisVertical, Image, Images } from 'lucide-react'
+import { Images } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 
 export default function EditPost() {
@@ -70,17 +70,16 @@ export default function EditPost() {
     }
     
     return (
-        <main className={`w-full flex mt-18 py-10 px-60 min-h-screen`}>
+        <main className={`w-full flex mt-18 py-10`}>
             <section className='w-full' >
                 <form className='flex flex-col gap-4 items-center justify-center' onSubmit={handleSubmit}>
-                    <div className='flex items-center w-220 gap-5'>
-
+                    <div className='flex items-center justify-center lg:w-220 gap-5'>
                         <input 
                         type='text' 
                         name='title'
                         value={formDetails.title}
                         onChange={handleChange}
-                        className="my-3 p-4 text-xl w-210 border-l-2 border-stone-500 rounded-sm"
+                        className="my-3 p-4 text-xl w-65 md:w-132 lg:w-210 border-l-2 border-stone-500 rounded-sm"
                         placeholder='Enter Title'/>
                         {errors.title && (
                             <p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>
@@ -98,15 +97,14 @@ export default function EditPost() {
                         </label>
                     </div>
 
-                    <img src={fileDataURL}/>
+                    <img src={fileDataURL} className='max-w-90 md:max-w-150 lg:max-w-230'/>
 
                     <textarea 
                         rows="15" 
-                        cols="95" 
                         onChange={handleChange} 
                         name="content" 
                         value={formDetails.content}
-                        className='border my-2 p-4 text-lg'>
+                        className='text-input border w-80 md:w-150 lg:w-222 my-2 p-4 text-lg'>
                     </textarea>
                     {errors.content && (<p className='text-red-500 my-2 self-start ml-3'>{errors.content}</p>)}
 

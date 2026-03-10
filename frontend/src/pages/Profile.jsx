@@ -90,50 +90,51 @@ export default function Profile() {
     }
 
     return (
-        <main className={`py-28 px-60 min-h-screen w-full`}>
+        <main className={`flex justify-center py-28 min-h-screen w-full`}>
             <section>
                 {profile && (
-                    <div className='flex gap-4 border-b border-gray-300 pb-3'>
-
-                        <div className='flex items-center flex-col gap-2 justify-center w-75'>
+                    <div className='flex gap-10 lg:gap-4 border-b border-gray-300 pb-3 justify-center'>
+                        <div className='flex items-center flex-col gap-2 justify-center w-25 lg:w-75'>
                             <div>
                                 {profile.avatar && (<img src={profile.avatar} className='w-22 h-22 rounded-full'/>)}
                             </div>
-                            <div className='flex items-center flex-col'>
+                            <div className='flex items-center flex-col text-center'>
                                 <h3 className='text-lg my-1'>{profile.username}</h3>
                                 <p className='font-light'>{profile.bio}</p>
                             </div>
                             
                         </div>
-                        <div className='flex gap-28 pt-4'>
-                            <div className='flex flex-col items-center'>
-                                <h4 className='font-bold text-lg'>Followers</h4>
-                                <span>{profile.followers?.length || 0}</span>
+                        <div className='flex gap-14 lg:gap-34'>
+                            <div className='flex flex-col md:flex-row gap-6 md:gap-18 lg:gap-28 pt-4'>
+                                <div className='flex flex-col items-center'>
+                                    <h4 className='font-bold text-lg'>Followers</h4>
+                                    <span>{profile.followers?.length || 0}</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <h4 className='font-bold text-lg'>Following</h4>
+                                    <span>{profile.following?.length || 0}</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <h4 className='font-bold text-lg'>Posts</h4>
+                                    <span>{posts?.length || 0}</span>
+                                </div>
                             </div>
-                            <div className='flex flex-col items-center'>
-                                <h4 className='font-bold text-lg'>Following</h4>
-                                <span>{profile.following?.length || 0}</span>
+                                    
+                            {profile._id === user._id ? (
+                            <div className='mt-2'>
+                                <Link to="/update-profile"><button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center'>Update</button></Link>
                             </div>
-                            <div className='flex flex-col items-center'>
-                                <h4 className='font-bold text-lg'>Posts</h4>
-                                <span>{posts?.length || 0}</span>
-                            </div>
-                        </div>
-                                
-                        {profile._id === user._id ? (
-                        <div className='ml-25 mt-2'>
-                            <Link to="/update-profile"><button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center'>Update</button></Link>
-                        </div>
 
-                        ) : (
-                            <div className='ml-25 mt-2'>
-                                {isFollowing ? (
-                                    <button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center' onClick={unFollowAuthor}>Unfollow</button>
-                                ) : (
-                                    <button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center' onClick={followAuthor}>Follow</button>
-                                )}
-                            </div>
-                        )}
+                            ) : (
+                                <div className='mt-2'>
+                                    {isFollowing ? (
+                                        <button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center' onClick={unFollowAuthor}>Unfollow</button>
+                                    ) : (
+                                        <button className='rounded-lg bg-red-800 text-white py-2 px-3 hover:bg-red-600 flex items-center' onClick={followAuthor}>Follow</button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                         
                     </div>
                     )}
@@ -143,13 +144,13 @@ export default function Profile() {
                                 No Posts.
                         </div>
                     ) : (
-                        <div className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4 items-center'>
                             {posts.map(post => (
-                            <div className='p-5 shadow-lg w-260' key={post._id}>
+                            <div className='p-5 shadow-lg w-105 md:w-180 lg:w-260' key={post._id}>
                                 <Link to={`/post/${post._id}`}>
                                 <div>
                                     <h1 className='font-bold text-2xl my-1'>{post.title}</h1>
-                                    <p className={`${theme=== "dark" ? "text-stone-300" : "text-stone-800"} text-md`}>{post.content}</p>
+                                    <p className={`${theme=== "dark" ? "text-stone-300" : "text-stone-800"} text-md line-clamp-2`}>{post.content}</p>
                                 </div>
                                 </Link>
                             </div>

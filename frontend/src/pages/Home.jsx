@@ -19,7 +19,7 @@ export default function Home() {
     
     return (
         <main className={`w-full flex py-20 min-h-screen gap-15`}>
-            <section className='flex justify-center w-275 py-8'>
+            <section className='flex justify-center w-full md:w-150 lg:w-275 py-8'>
             {loading ? (
                 <div className='flex justify-center'>
                     <h1>Loading...</h1>
@@ -28,7 +28,7 @@ export default function Home() {
                 <div className='flex flex-col gap-5'>
                     {posts.map(post => (
                         <Link to={`/post/${post._id}`}>
-                        <div className='p-5 shadow-lg w-200 flex gap-4 justify-between items-center' key={post._id}>
+                        <div className='p-5 shadow-lg w-100 md:w-120 lg:w-200 flex gap-4 justify-between items-center' key={post._id}>
                             <div className='flex-7'>
                                 <div>
                                     <h1 className='font-bold text-2xl my-1 line-clamp-2'>{post.title}</h1>
@@ -54,7 +54,7 @@ export default function Home() {
                 </div>
             )}
             </section> 
-            <aside className='aside w-110 border-l-2 border-stone-300 fixed right-0 px-10 py-8 h-screen overflow-y-auto'>
+            <aside className='aside hidden md:block fixed md:w-80 lg:w-110 border-l-2 border-stone-300 right-0 px-10 py-8 h-screen overflow-y-auto'>
                 <TrendingPosts/>
 
                 <SuggestedFollows/>

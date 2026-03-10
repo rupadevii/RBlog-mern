@@ -67,21 +67,21 @@ export default function CreatePost() {
     }
 
     return (
-        <main className={`w-full flex px-50 py-28 min-h-screen`}>
+        <main className="w-full flex py-28">
             <section className='w-full'>
-                <form className='flex flex-col gap-4 items-center justify-center w-full' onSubmit={handleSubmit}>
-                    <div className='flex items-center w-220 gap-5'>
+                <form className='flex flex-col gap-4 items-center justify-center' onSubmit={handleSubmit}>
+                    <div className='flex items-center justify-center lg:w-220 gap-5'>
                         <input 
                         type='text' 
                         name='title'
                         value={formDetails.title}
                         onChange={handleChange}
-                        className={`my-3 p-4 text-xl w-210 border-l-2 border-stone-500 rounded-sm`}
+                        className={`my-3 p-4 text-xl w-65 md:w-132 lg:w-210 border-l-2 border-stone-500 rounded-sm`}
                         placeholder='Enter Title'/>
                         {errors.title && (<p className='text-red-500 my-2 self-start ml-3'>{errors.title}</p>)}
 
                         <input 
-                            type="file" 
+                            type="file"
                             onChange={uploadFile} 
                             className='self-center' 
                             style={{display: "none"}} 
@@ -93,15 +93,14 @@ export default function CreatePost() {
 
                     </div>
 
-                    <img src={fileDataURL}/>
+                    <img src={fileDataURL} className='max-w-90 md:max-w-150 lg:max-w-300'/>
 
                     <textarea 
                         rows="15" 
-                        cols="95" 
                         onChange={handleChange} 
                         name="content" 
                         value={formDetails.content}
-                        className='border mb-5 p-4 text-lg'></textarea>
+                        className='text-input border mb-5 p-4 text-lg w-80 md:w-150 lg:w-222'></textarea>
                     {errors.content && (<p className='text-red-500 my-2 self-start ml-3'>{errors.content}</p>)}
 
                     <button type='submit' className='bg-red-900 px-3 py-2 rounded-md hover:bg-red-800 text-white'>Post</button>
