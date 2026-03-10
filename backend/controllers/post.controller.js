@@ -180,23 +180,31 @@ export const likePost = async (req, res) => {
         const {postId} = req.params;
         const userId = req.user.id;
 
-        const post = await Post.findById(postId);
+        const post = await Post.findByIdAndUpdate(postId, {$push : {likes: userId}}, {returnDocument: 'after'})
 
         if(!post){
             return res.status(404).json({msg: "Post not found"})
         }
 
-        const isLiked = post.likes.includes(userId);
-
-        if(isLiked){
-            post.likes.pull(userId)
-        }
-        else{
-            post.likes.push(userId)
-        }
-        await post.save()
-
         res.status(200).json({msg: "Post liked successfully.", post})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({msg: error.message})
+    }
+}
+
+export const unLikePost = async (req, res) => {
+    try {
+        const {postId} = req.params;
+        const userId = req.user.id;
+
+        const post = await Post.findByIdAndUpdate(postId, {$pull : {likes: userId}}, {returnDocument: 'after'})
+
+        if(!post){
+            return res.status(404).json({msg: "Post not found"})
+        }
+
+        res.status(200).json({msg: "Post unliked successfully.", post})
     } catch (error) {
         console.error(error)
         res.status(500).json({msg: error.message})

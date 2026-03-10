@@ -65,19 +65,14 @@ export const updateProfile = async (req, res) => {
 }
 
 export const followUser = async (req, res) => {
-    try{
-        // const user = await User.findById(req.user.id);
-    
+    try{    
         const {id} = req.params;
         
-        const author = await User.findByIdAndUpdate(id, {$push: {followers: req.user.id}})
-        const user = await User.findByIdAndUpdate(req.user.id, {$push: {following: id}})
-
-        if(!author){
-            return res.status(404).json({msg: "User not found."})
-        }
+        const result = await Promise.all([
+            User.findByIdAndUpdate(id, {$push: {followers: req.user.id}}),
+            User.findByIdAndUpdate(req.user.id, {$push: {following: id}})
+        ])
         
-        await user.save()
         res.status(200).json({msg: "Followed Successfully"})
     }
     catch(error){
@@ -91,12 +86,10 @@ export const unFollowUser = async (req, res) => {
     try{    
         const {id} = req.params;
         
-        const author = await User.findByIdAndUpdate(id, {$pull: {followers: req.user.id}})
-        const user = await User.findByIdAndUpdate(req.user.id, {$pull: {following: id}})
-    
-        if(!author){
-            return res.status(404).json({msg: "User not found."})
-        }
+        const result = await Promise.all([
+            User.findByIdAndUpdate(id, {$pull: {followers: req.user.id}}),
+            User.findByIdAndUpdate(req.user.id, {$pull: {following: id}})
+        ]) 
     
         res.status(200).json({msg: "Unfollowed Successfully"})
     }
@@ -109,7 +102,6 @@ export const unFollowUser = async (req, res) => {
 
 export const suggestedFollows = async (req, res) => {
     try{
-        // console.log(req.user)
         const user = await User.findById(req.user.id);
 
         const users = await User.aggregate([

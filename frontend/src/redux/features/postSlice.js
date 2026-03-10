@@ -10,9 +10,14 @@ const initialState = {
 
 export const fetchPosts = createAsyncThunk (
     'posts/fetchPosts',
-    async (page=1) => {
-        const res = await axios.get(`/api/posts?page=${page}`)
-        return res.data.posts
+    async (page=1, thunkAPI) => {
+        try{
+            const res = await axios.get(`/api/posts?page=${page}`)
+            return res.data.posts
+        }
+        catch(error){
+            return thunkAPI.rejectWithValue(error.message)
+        }
     }
 )
 
@@ -39,7 +44,7 @@ export const postSlice = createSlice({
         })
         .addCase(fetchPosts.rejected, (state, action) => {
             state.loading = false
-            state.error = action.error
+            state.error = action.payload
         })
     }
 })

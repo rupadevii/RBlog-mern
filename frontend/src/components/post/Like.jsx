@@ -1,14 +1,24 @@
 import axios from 'axios'
 import { ThumbsUp } from 'lucide-react'
-import React from 'react'
 
 export default function Like({isLiked, post, setPost}) {
-    async function handleClick(){
+    async function likePost(){
         try{
             const res = await axios.post(`/api/posts/like/${post._id}`, {
                 withCredentials: true,
             })
-            console.log(res)
+            setPost(prev => ({...prev, likes:res.data.post.likes}))
+        }
+        catch(error){
+            console.error(error)
+        }
+    }
+
+    async function unlikePost(){
+        try{
+            const res = await axios.post(`/api/posts/unlike/${post._id}`, {
+                withCredentials: true,
+            })
             setPost(prev => ({...prev, likes:res.data.post.likes}))
         }
         catch(error){
@@ -17,12 +27,15 @@ export default function Like({isLiked, post, setPost}) {
     }
     return (
         <div>
-            <button onClick={handleClick}>{!isLiked ? (
-                <ThumbsUp />
+            {!isLiked ? (
+                <button onClick={likePost}>
+                    <ThumbsUp />
+                </button>
             ) : (
-                <ThumbsUp fill='green' color='green'/>
+                <button onClick={unlikePost}>
+                    <ThumbsUp fill='green' color='green'/>
+                </button>
             )}
-            </button>
             <p>{post.likes && post.likes.length} likes</p>
         </div>
     )

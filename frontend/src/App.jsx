@@ -38,11 +38,13 @@ export default function App() {
                 <Route path="/post/:id" element={<Post/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
-                <Route path="/profile/:id" element={<Profile/>}/>
-                <Route path="/update-profile" element={<ProtectedRoute><UpdateProfile/></ProtectedRoute>}/>
-                <Route path="/create" element={<CreatePost/>}/>
-                <Route path='/edit/:id' element={<EditPost/>}/>
-                <Route path='/delete/:id' element={<Delete/>}/>
+                <Route element={<ProtectedRoute/>}>
+                    <Route path="/profile/:id" element={<Profile/>}/>
+                    <Route path="/update-profile" element={<UpdateProfile/>}/>
+                    <Route path="/create" element={<CreatePost/>}/>
+                    <Route path='/edit/:id' element={<EditPost/>}/>
+                    <Route path='/delete/:id' element={<Delete/>}/>
+                </Route>
                 <Route path='/search' element={<Search/>}>
                     <Route path='posts' element={<SearchPosts/>}/>
                     <Route path='users' element={<SearchUsers/>}/>

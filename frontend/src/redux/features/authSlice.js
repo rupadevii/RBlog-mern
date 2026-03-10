@@ -10,11 +10,16 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk(
     'auth/fetchUser',
-    async() => {
-        const res = await axios.get(`/api/user/profile`, {
-            withCredentials: true
-        })
-        return res.data.user
+    async(thunkAPI) => {
+        try{
+            const res = await axios.get(`/api/user/profile`, {
+                withCredentials: true
+            })
+            return res.data.user
+        }
+        catch(error){
+            return thunkAPI.rejectWithValue(error.message);
+        }
     }
 )
 
@@ -57,7 +62,7 @@ const authSlice = createSlice({
         })
         .addCase(fetchUser.rejected, (state, action) => {
             state.loading = false,
-            state.error = action.error
+            state.error = action.payload
         })
     }
 })
