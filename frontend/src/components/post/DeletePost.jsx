@@ -1,12 +1,12 @@
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import api from '../../services/api';
 
 export default function DeletePost({closeModal, postId}) {
     const navigate = useNavigate();
 
     async function deletePost(){
         try{
-            const res = await axios.delete(`/api/posts/${postId}`, {
+            const res = await api.delete(`/api/posts/${postId}`, {
                 withCredentials: true,
             })
 

@@ -29,6 +29,10 @@ app.use("/api/user", authMiddleware, userRoutes)
 app.use("/api/posts", postRoutes)
 app.use("/api/comments", commentRoutes)
 
+app.get("/health", (req, res) => {
+    res.json({msg: "SERVER IS RUNNING."})
+})
+
 app.listen(process.env.PORT, () => {
     console.log("Server is running on PORT", process.env.PORT)
 })

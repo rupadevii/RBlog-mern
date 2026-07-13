@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch} from 'react-redux';
-import axios from 'axios';
 import { login } from '../redux/features/authSlice';
 import { useTheme } from '../context/ThemeContext';
+import api from '../services/api';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Login() {
@@ -49,7 +49,7 @@ export default function Login() {
         }
         
         try{
-            const res = await axios.post(`/api/auth/login`, formData, {
+            const res = await api.post(`/api/auth/login`, formData, {
                 withCredentials: true
             })
             dispatch(login({user: res.data.user}))

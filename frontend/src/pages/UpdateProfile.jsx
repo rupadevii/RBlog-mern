@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { update } from '../redux/features/authSlice'
+import api from '../services/api';
 
 export default function UpdateProfile() {
     const {user} = useSelector((state) => state.auth)
@@ -41,7 +41,7 @@ export default function UpdateProfile() {
         formData.append('bio', formDetails.bio)
 
         try{
-            const res = await axios.post(`/api/user/profile`, formData, {
+            const res = await api.post(`/api/user/profile`, formData, {
                 withCredentials: true,
                 headers: {
                 "Content-Type": "multipart/form-data",

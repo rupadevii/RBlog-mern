@@ -1,7 +1,7 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '../../context/ThemeContext'
 import { Link } from 'react-router-dom'
+import api from '../../services/api';
 
 export default function SearchSuggestions({input}) {
     const [posts, setPosts] = useState([])
@@ -16,7 +16,7 @@ export default function SearchSuggestions({input}) {
                     setUsers([])
                     return;
                 }
-                const res = await axios.get(`/api/posts/search?q=${input}`)
+                const res = await api.get(`/api/posts/search?q=${input}`)
                 setPosts(res.data.posts)
                 setUsers(res.data.users)
             }catch(error){

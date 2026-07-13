@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
+import CardSkeleton from '../skeleton/CardSkeleton'
+import api from '../../services/api';
 
 export default function SearchUsers() {
     const {users, loading} = useOutletContext()
@@ -17,7 +18,7 @@ export default function SearchUsers() {
 
     async function followAuthor(id, idx){
         try{
-            const res = await axios.post(`/api/user/follow/${id}`, {}, {
+            const res = await api.post(`/api/user/follow/${id}`, {}, {
                 withCredentials: true
             })
             console.log(res)
@@ -31,7 +32,7 @@ export default function SearchUsers() {
 
     async function unFollowAuthor(id, idx){
         try{
-            const res = await axios.post(`/api/user/unfollow/${id}`, {}, {
+            const res = await api.post(`/api/user/unfollow/${id}`, {}, {
                 withCredentials: true
             })
             console.log(res)
@@ -46,7 +47,7 @@ export default function SearchUsers() {
         <div className='py-4'>
             {loading ? (
                 <div className='flex justify-center'>
-                    <h1>Loading...</h1>
+                    <CardSkeleton cardItems={8}/>
                 </div>
             ) : (
                 <div>

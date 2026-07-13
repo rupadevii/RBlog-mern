@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTheme } from '../../context/ThemeContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 export default function SuggestedFollows() {
     const {theme} = useTheme();
@@ -13,7 +14,7 @@ export default function SuggestedFollows() {
         async function fetchUsers(){
             try{
                 setIsLoading(true)
-                const res = await axios.get('/api/user/suggested')
+                const res = await api.get('/api/user/suggested')
                 setUsers(res.data.users)
             }catch(error){
                 console.error(error)
@@ -40,7 +41,7 @@ export default function SuggestedFollows() {
 
     async function unFollowAuthor(id, idx){
         try{
-            const res = await axios.post(`/api/user/unfollow/${id}`, {}, {
+            const res = await api.post(`/api/user/unfollow/${id}`, {}, {
                 withCredentials: true
             })
             console.log(res)
@@ -54,38 +55,42 @@ export default function SuggestedFollows() {
     return (
         <div className='pb-12 pt-3'>
             {isLoading ? (
-                <p>Loading...</p>
+                <div>Loading...</div>
             ) : (
                 <div>
-                    <h2 className='text-xl font-bold'>Who To Follow</h2>
-                    <div className='py-4'>
-                        {users.map((user, index) => (
-                            <div className={`my-2 px-5 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={user._id}>
-                                <div className='flex gap-3 items-center my-1 justify-between'>
-                                    <Link to={`/profile/${user._id}`}>
-                                    <div className='flex gap-3 items-center'>
-                                        <img src={user.avatar} className='w-8 h-8 rounded-full'/>
-                                        <div>
-                                            <h2 className='font-semibold hover:underline underline-offset-1'>{user.username}</h2>
-                                            <p>{user.bio}</p>
+                    {users.length>0 && (
+                        <>
+                            <h2 className='text-xl font-bold'>Who To Follow</h2>
+                            <div className='py-4'>
+                                {users.map((user, index) => (
+                                    <div className={`my-2 px-5 py-4 shadow-sm rounded-xl ${theme === "dark" ? "hover:bg-stone-700" : "hover:bg-stone-100"}`} key={user._id}>
+                                        <div className='flex gap-3 items-center my-1 justify-between'>
+                                            <Link to={`/profile/${user._id}`}>
+                                            <div className='flex gap-3 items-center'>
+                                                <img src={user.avatar} className='w-8 h-8 rounded-full'/>
+                                                <div>
+                                                    <h2 className='font-semibold hover:underline underline-offset-1'>{user.username}</h2>
+                                                    <p>{user.bio}</p>
+                                                </div>
+                                            </div>
+                                            </Link>
+                                            <div>
+                                                {following[index] ? (
+                                                    <button className='border rounded-2xl px-3 py-1' onClick={() => followAuthor(user._id, index)}>
+                                                        UnFollow
+                                                    </button>
+                                                ) : (
+                                                    <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
+                                                        Follow
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                    </Link>
-                                    <div>
-                                        {following[index] ? (
-                                            <button className='border rounded-2xl px-3 py-1' onClick={() => followAuthor(user._id, index)}>
-                                                UnFollow
-                                            </button>
-                                        ) : (
-                                            <button className='border rounded-2xl px-3 py-1' onClick={() => unFollowAuthor(user._id, index)}>
-                                                Follow
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </>
+                    )}
                 </div>
             )}
         </div>

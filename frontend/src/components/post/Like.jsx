@@ -1,10 +1,10 @@
-import axios from 'axios'
 import { ThumbsUp } from 'lucide-react'
+import api from '../../services/api';
 
 export default function Like({isLiked, post, setPost}) {
     async function likePost(){
         try{
-            const res = await axios.post(`/api/posts/like/${post._id}`, {
+            const res = await api.post(`/api/posts/like/${post._id}`, {
                 withCredentials: true,
             })
             setPost(prev => ({...prev, likes:res.data.post.likes}))
@@ -16,7 +16,7 @@ export default function Like({isLiked, post, setPost}) {
 
     async function unlikePost(){
         try{
-            const res = await axios.post(`/api/posts/unlike/${post._id}`, {
+            const res = await api.post(`/api/posts/unlike/${post._id}`, {
                 withCredentials: true,
             })
             setPost(prev => ({...prev, likes:res.data.post.likes}))

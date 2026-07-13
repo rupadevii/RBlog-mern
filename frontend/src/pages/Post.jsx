@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import CommentForm from '../components/post/CommentForm'
@@ -9,6 +8,7 @@ import { useTheme } from '../context/ThemeContext'
 import Like from '../components/post/Like'
 import { useSelector } from 'react-redux'
 import { formattedDate } from '../utils/date'
+import api from '../services/api';
 
 export default function Post() {
     const {id} = useParams()
@@ -51,7 +51,7 @@ export default function Post() {
     useEffect(() => {
         async function loadPosts(){
             try{
-                const res = await axios.get(`/api/posts/${id}`)
+                const res = await api.get(`/api/posts/${id}`)
                 setPost(res.data.post)
                 setComments(res.data.comments)
                 console.log(res.data.comments)
@@ -105,7 +105,7 @@ export default function Post() {
                             {post.image && (
                                 <img src={post.image} className='w-400 mb-10' alt={post.title}/>
                             )}
-                            <p className='text-xl leading-normal'>{post.content}</p>
+                            <p className='text-xl leading-normal whitespace-pre-wrap'>{post.content}</p>
                         </div>
                         <div className='mt-8 flex gap-2 flex-col'>
                             <Like post={post} isLiked={isLiked} setPost={setPost}/>

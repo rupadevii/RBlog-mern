@@ -17,13 +17,12 @@ import { fetchUser } from "./redux/features/authSlice";
 import Search from "./pages/Search";
 import SearchUsers from "./components/search/SearchUsers";
 import SearchPosts from "./components/search/SearchPosts";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 Modal.setAppElement('#root');
 
 export default function App() {
     const dispatch = useDispatch()
-    console.log("App got mounted.")
-    //fetchUser dispatch nahi ho raha hai and only God knows why.
      
     useEffect(() => {
         dispatch(fetchUser())

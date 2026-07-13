@@ -2,10 +2,10 @@ import { Moon, Pencil, Search, Sun } from "lucide-react"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import { logout } from '../redux/features/authSlice'
 import { useState } from "react"
 import SearchSuggestions from "./search/SearchSuggestions"
+import api from "../services/api";
 
 export default function Navbar() {
     const location = useLocation()
@@ -21,7 +21,7 @@ export default function Navbar() {
 
     async function logoutUser(){
         try{
-            const res = await axios.post(`/api/auth/logout`, {
+            const res = await api.post(`/api/auth/logout`, {
                 withCredentials: true
             })
             setTimeout(() => {
@@ -54,7 +54,7 @@ export default function Navbar() {
         className='w-full fixed top-0 bg-red-800 p-5 flex pl-20 pr-12 justify-between items-center' 
         onClick={() => setShowSuggestions(false)}>
             <div className='flex gap-9 items-center ml-10'>
-                <Link to="/"><span className='text-lg'>Haha</span></Link>
+                <Link to="/"><span className='text-lg'>RBlog</span></Link>
                 <div className='flex items-center relative'>
                     <span className='absolute left-2'><Search size={18}/></span>
                     <input 

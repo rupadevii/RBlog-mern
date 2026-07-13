@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import api from "../../services/api";
 
 const initialState = {
     posts: [],
@@ -12,7 +12,7 @@ export const fetchPosts = createAsyncThunk (
     'posts/fetchPosts',
     async (page=1, thunkAPI) => {
         try{
-            const res = await axios.get(`/api/posts?page=${page}`)
+            const res = await api.get(`/api/posts?page=${page}`)
             return res.data.posts
         }
         catch(error){

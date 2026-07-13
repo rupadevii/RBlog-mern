@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useSearchParams } from 'react-router-dom'
+import api from '../services/api';
 
 export default function Search() {
     const [searchParam] = useSearchParams()
@@ -14,7 +14,7 @@ export default function Search() {
         async function fetchSearchResults(){
             try{
                 setLoading(true)
-                const res = await axios.get(`/api/posts/search?q=${query}`)
+                const res = await api.get(`/api/posts/search?q=${query}`)
                 setPosts(res.data.posts)
                 setUsers(res.data.users)
             }catch(error){

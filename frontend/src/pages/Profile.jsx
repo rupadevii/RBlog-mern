@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useSelector } from 'react-redux'
+import api from '../services/api';
 
 export default function Profile() {
     const {user, loading} = useSelector((state) => state.auth)
@@ -14,7 +14,7 @@ export default function Profile() {
     
     async function loadPosts(){
         try{
-            const res = await axios.get(`/api/posts/user/${id}`, {
+            const res = await api.get(`/api/posts/user/${id}`, {
                 withCredentials: true
             })
             
@@ -27,12 +27,12 @@ export default function Profile() {
 
     async function loadProfile(){
         try{
-            const res = await axios.get(`/api/user/user-profile/${id}`, {
+            const res = await api.get(`/api/user/user-profile/${id}`, {
                 withCredentials: true
             })
             
             setProfile(res.data.user)
-            console.log(res.data.user.followers.some(item => item === user._id))
+
             setIsFollowing(res.data.user.followers.some(item => item === user._id))
             
         }catch(error){
@@ -57,7 +57,7 @@ export default function Profile() {
 
     async function followAuthor(){
         try{
-            const res = await axios.post(`/api/user/follow/${id}`, {}, {
+            const res = await api.post(`/api/user/follow/${id}`, {}, {
                 withCredentials: true
             })
             
@@ -73,7 +73,7 @@ export default function Profile() {
 
     async function unFollowAuthor(){
         try{
-            const res = await axios.post(`/api/user/unfollow/${id}`, {}, {
+            const res = await api.post(`/api/user/unfollow/${id}`, {}, {
                 withCredentials: true
             })
             console.log(res)

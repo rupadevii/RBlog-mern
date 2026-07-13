@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import { useTheme } from '../context/ThemeContext';
 import { Moon, Sun } from 'lucide-react';
+import api from '../services/api';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Register() {
@@ -51,7 +51,7 @@ export default function Register() {
         }
         
         try{
-            const res = await axios.post(`/api/auth/register`, formData, {
+            const res = await api.post(`/api/auth/register`, formData, {
                 withCredentials: true
             })
             console.log(res)

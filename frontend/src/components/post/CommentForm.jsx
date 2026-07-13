@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { useState } from 'react'
+import api from '../../services/api';
 
 export default function CommentForm({postId, setComments}) {
     const [comment, setComment] = useState("")
@@ -8,7 +8,7 @@ export default function CommentForm({postId, setComments}) {
         e.preventDefault()
 
         try{
-            const res = await axios.post(`/api/comments`, {post: postId, content:comment}, {
+            const res = await api.post(`/api/comments`, {post: postId, content:comment}, {
                 withCredentials: true,
             })
             setComments(prev => ([res.data.comment, ...prev]))

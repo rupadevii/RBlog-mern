@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useTheme } from '../context/ThemeContext'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import {Images} from 'lucide-react'
+import api from '../services/api';
 
 export default function CreatePost() {
     const {theme} = useTheme()
@@ -49,7 +49,7 @@ export default function CreatePost() {
         formData.append('content', formDetails.content)
 
         try{
-            const res = await axios.post(`/api/posts`, formData, {
+            const res = await api.post(`/api/posts`, formData, {
                 withCredentials: true,
                 headers: {
                 "Content-Type": "multipart/form-data",

@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Images } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
+import api from '../services/api';
 
 export default function EditPost() {
     const {id} = useParams()
@@ -52,7 +52,7 @@ export default function EditPost() {
         formData.append('content', formDetails.content)
 
         try{
-            const res = await axios.put(`/api/posts/${id}`, formData, {
+            const res = await api.put(`/api/posts/${id}`, formData, {
                 withCredentials: true,
                 headers: {
                 "Content-Type": "multipart/form-data",
