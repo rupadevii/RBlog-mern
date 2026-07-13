@@ -3,6 +3,7 @@ import { useTheme } from '../../context/ThemeContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import CardSkeleton from '../skeleton/CardSkeleton';
 
 export default function SuggestedFollows() {
     const {theme} = useTheme();
@@ -55,7 +56,7 @@ export default function SuggestedFollows() {
     return (
         <div className='pb-12 pt-3'>
             {isLoading ? (
-                <div>Loading...</div>
+                <div><CardSkeleton cardItems={8}/></div>
             ) : (
                 <div>
                     {users.length>0 && (
