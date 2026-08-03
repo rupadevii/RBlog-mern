@@ -26,6 +26,20 @@ export const register = async (req, res) => {
             password: hashedPassword
         })
 
+        const token = generateToken({
+            username: newUser.username,
+            email: newUser.email,
+            id: newUser._id
+        })
+
+        res.cookie("auth_token_cookie", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path:"/"
+        })
+
         res.status(200).json({msg: "User created successfully"})
     } catch (error) {
         console.error(error.message)
@@ -67,7 +81,7 @@ export const login = async (req, res) => {
             path:"/"
         })
 
-        res.status(200).json({msg: "User logged in successfully.", user})
+        res.status(200).json({msg: "User logged in successfully."})
     }
     catch(error){
         console.error(error.message)
@@ -87,6 +101,30 @@ export const logout = async (req, res) => {
     }
     catch(error){
         console.error(error.message);
+        res.status(500).json({msg: error.message})
+    }
+}
+
+export const getMe = async (req, res) => {
+    try{
+        // console.log(req.user.id)
+        const user = await User.findById(req.user.id)
+
+        if(!user){
+            return res.status(404).json({msg: "User not found"})
+        }
+
+        console.log(user)
+        res.status(200).json({user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            followers: user.followers,
+            following: user.following,
+            avatar: user.avatar
+        }})
+    }catch(error){
         res.status(500).json({msg: error.message})
     }
 }

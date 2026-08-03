@@ -12,9 +12,7 @@ export const fetchUser = createAsyncThunk(
     'auth/fetchUser',
     async(thunkAPI) => {
         try{
-            const res = await api.get(`/api/user/profile`, {
-                withCredentials: true
-            })
+            const res = await api.get(`/api/auth/me`)
             return res.data.user
         }
         catch(error){
@@ -27,12 +25,6 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login : (state, action) => {
-            state.user = action.payload.user
-            state.isAuthenticated = true
-            state.loading = false
-            state.error = null
-        },
         logout : (state) => {
             state.user = null
             state.isAuthenticated = false
@@ -51,21 +43,23 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
         .addCase(fetchUser.pending, (state) => {
-            state.loading = true,
+            state.loading = true
             state.error = null 
         })
         .addCase(fetchUser.fulfilled, (state, action) => {
-            state.loading = false,
-            state.user = action.payload,
+            state.loading = false
+            state.user = action.payload
             state.isAuthenticated = true
             state.error = null
         })
         .addCase(fetchUser.rejected, (state, action) => {
-            state.loading = false,
+            state.loading = false
             state.error = action.payload
+            state.user = null
+            state.isAuthenticated = false
         })
     }
 })
 
-export const {login, logout, update} = authSlice.actions
+export const {logout, update} = authSlice.actions
 export default authSlice.reducer

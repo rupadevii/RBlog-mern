@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch} from 'react-redux';
-import { login } from '../redux/features/authSlice';
+import { fetchUser } from '../redux/features/authSlice';
 import { useTheme } from '../context/ThemeContext';
 import api from '../services/api';
 const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Login() {
     const [formData, setFormData] = useState({email: "", password: ""})
+    const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({})
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
@@ -18,6 +19,7 @@ export default function Login() {
  
     function handleChange(e){
         const {name, value} = e.target
+
         setFormData((prev) => ({...prev, [name] : value}))
         setMsg({})
         let error = ""
@@ -32,7 +34,17 @@ export default function Login() {
             }
         }
 
-        setErrors((prev) => ({...prev, [name]: error}))
+        setErrors(prev => {
+            const newErrors = { ...prev };
+
+            if (error) {
+                newErrors[name] = error;
+            } else {
+                delete newErrors[name];
+            }
+
+            return newErrors;
+        });
     }
 
     async function handleSubmit(e){
@@ -47,22 +59,26 @@ export default function Login() {
             setErrors(error)
             return
         }
+
+        if(Object.keys(errors).length>0){
+            return
+        }
         
         try{
-            const res = await api.post(`/api/auth/login`, formData, {
-                withCredentials: true
-            })
-            dispatch(login({user: res.data.user}))
+            setLoading(true)
+            const res = await api.post(`/api/auth/login`, formData)
+            console.log(res)
+            dispatch(fetchUser())
             setMsg({success: "Logged in successfully!"})
-            setTimeout(() => {
-                navigate("/")
-            }, 1500)
+            navigate("/")
         }
         catch(error){
             console.error(error.response.data.msg)
             if(error.response.data.msg){
                 setMsg({err: error.response.data.msg})
             }
+        }finally{
+            setLoading(false)
         }
     }
 
@@ -91,7 +107,7 @@ export default function Login() {
                         placeholder='Enter password'/>
                     {errors.password && (<p className='text-red-500 my-2 self-start ml-3'>{errors.password}</p>)}
 
-                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white'>Login</button>
+                    <button type='submit' className='bg-red-900 px-3 py-2 rounded-md mt-4 hover:bg-red-800 text-white' disabled={loading}>Login</button>
                     <p className={`mt-5 ${color}`}>
                         Don't have an account?{" "}
                         <span className={`text-red-900 underline ${theme === "dark" ? "hover:text-white" : "hover:text-black"}`}>
